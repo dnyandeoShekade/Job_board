@@ -1,0 +1,109 @@
+:root {
+  --nav-height: 72px;
+  --max-width: 1200px;
+  --accent-start: #2f6fff;
+  --accent-end: #5b8dff;
+  --accent-dark: #1560ff;
+  --text: #0f1724;
+}
+
+.site-header {
+  height: var(--nav-height);
+  border-bottom: 1px solid rgba(16, 24, 40, 0.06);
+  display: flex;
+  align-items: center;
+  background: white;
+}
+
+.header-container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+  box-shadow: 0 4px 12px rgba(79, 100, 255, 0.18);
+}
+
+.brand-text {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.brand-job {
+  color: var(--accent-dark);
+}
+.brand-sphere {
+  color: #0b1220;
+  margin-left: 3px;
+}
+
+.main-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 28px;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: rgba(11, 17, 32, 0.8);
+  font-weight: 600;
+  padding: 8px 0;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn {
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.btn-login {
+  color: var(--accent-dark);
+  border-color: rgba(47, 111, 255, 0.18);
+}
+
+.btn-register {
+  color: white;
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  box-shadow: 0 6px 18px rgba(79, 100, 255, 0.18);
+}
+
+@media (max-width: 800px) {
+  .main-nav {
+    display: none;
+  }
+}
