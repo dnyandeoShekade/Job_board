@@ -12,7 +12,7 @@ const testimonials = [
     role: "Frontend Developer",
     image: "/image/profile1.png",
     rating: 5,
-    text: "JobSphere helped me find the perfect job opportunity within a week. The platform is easy to use and highly recommended!",
+    text: "JobSportal helped me find the perfect job opportunity within a week. The platform is easy to use and highly recommended!",
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const testimonials = [
     role: "UI/UX Designer",
     image: "/image/profile.png",
     rating: 5,
-    text: "The quality of job listings and company verification gives confidence. I found my dream job through JobSphere!",
+    text: "The quality of job listings and company verification gives confidence. I found my dream job through JobSportal!",
   },
   {
     id: 3,
@@ -36,11 +36,15 @@ export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+    setCurrentIndex((prev) =>
+      prev === 0 ? testimonials.length - 1 : prev - 1,
+    );
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) =>
+      prev === testimonials.length - 1 ? 0 : prev + 1,
+    );
   };
 
   return (
@@ -88,7 +92,9 @@ export default function Testimonials() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-12">
             <AnimatePresence mode="wait">
               {testimonials.map((testimonial, index) => {
-                const position = (index - currentIndex + testimonials.length) % testimonials.length;
+                const position =
+                  (index - currentIndex + testimonials.length) %
+                  testimonials.length;
                 const isVisible = position < 3;
 
                 return isVisible ? (

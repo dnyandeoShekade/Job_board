@@ -17,7 +17,8 @@ const features = [
   {
     id: 2,
     title: "Easy Application Process",
-    description: "Simple and quick application process to help you land jobs faster.",
+    description:
+      "Simple and quick application process to help you land jobs faster.",
     icon: FileCheck,
     bgColor: "bg-purple-50",
     iconColor: "text-purple-600",
@@ -45,7 +46,7 @@ export default function WhyChoose() {
           transition={{ duration: 0.5 }}
           className="text-3xl font-bold text-[#0b1220] mb-10"
         >
-          Why Choose JobSphere?
+          Why Choose JobSportal?
         </motion.h2>
 
         {/* Features Grid */}
@@ -69,7 +70,9 @@ export default function WhyChoose() {
                 }}
                 className="cursor-pointer"
               >
-                <div className={`${feature.bgColor} rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-lg`}>
+                <div
+                  className={`${feature.bgColor} rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-lg`}
+                >
                   <div className="flex flex-col items-start">
                     {/* Icon */}
                     <motion.div
@@ -77,7 +80,10 @@ export default function WhyChoose() {
                       transition={{ duration: 0.5 }}
                       className="mb-6"
                     >
-                      <Icon className={`w-16 h-16 ${feature.iconColor}`} strokeWidth={1.5} />
+                      <Icon
+                        className={`w-16 h-16 ${feature.iconColor}`}
+                        strokeWidth={1.5}
+                      />
                     </motion.div>
 
                     {/* Title */}

@@ -1,24 +1,40 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { MapPin, CircleDollarSign, Bookmark, ArrowRight } from "lucide-react";
 
+// Augmented the provided data with theme colors
 const jobs = [
   {
     id: 1,
     logo: "/image/adobe-logo.png",
     title: "Frontend Developer",
-    company: "Google",
+    company: "Adobe",
     location: "Pune, India",
     salary: "₹12 - 20 LPA",
     badge: "Full Time",
+    theme: {
+      btn: "bg-[#ed3833]",
+      hover: "hover:bg-[#d62823]",
+      badgeBg: "bg-red-50",
+      badgeText: "text-[#ed3833]",
+    },
   },
   {
     id: 2,
     logo: "/image/google logo.webp",
     title: "Backend Engineer",
-    company: "Microsoft",
+    company: "Google",
     location: "Bangalore, India",
     salary: "₹18 - 30 LPA",
     badge: "Full Time",
+    theme: {
+      btn: "bg-[#2f6fff]",
+      hover: "hover:bg-[#2052c9]",
+      badgeBg: "bg-blue-50",
+      badgeText: "text-[#2f6fff]",
+    },
   },
   {
     id: 3,
@@ -28,137 +44,187 @@ const jobs = [
     location: "Hyderabad, India",
     salary: "₹15 - 28 LPA",
     badge: "Full Time",
+    theme: {
+      btn: "bg-[#f58f0b]",
+      hover: "hover:bg-[#db7e07]",
+      badgeBg: "bg-orange-50",
+      badgeText: "text-[#f58f0b]",
+    },
   },
   {
     id: 4,
     logo: "/image/Logonetflix.png",
     title: "UI/UX Designer",
-    company: "Adobe",
+    company: "Netflix",
     location: "Noida, India",
     salary: "₹10 - 18 LPA",
     badge: "Full Time",
+    theme: {
+      btn: "bg-[#e50914]",
+      hover: "hover:bg-[#b80710]",
+      badgeBg: "bg-red-50",
+      badgeText: "text-[#e50914]",
+    },
   },
   {
     id: 5,
     logo: "/image/microsoft_PNG3.png",
     title: "DevOps Engineer",
-    company: "Meta",
+    company: "Microsoft",
     location: "Bangalore, India",
     salary: "₹20 - 35 LPA",
     badge: "Full Time",
+    theme: {
+      btn: "bg-[#2b9e38]",
+      hover: "hover:bg-[#217d2c]",
+      badgeBg: "bg-green-50",
+      badgeText: "text-[#2b9e38]",
+    },
   },
   {
     id: 6,
     logo: "/image/netflix.svg",
     title: "Data Scientist",
-    company: "Netflix",
+    company: "Meta",
     location: "Mumbai, India",
     salary: "₹25 - 40 LPA",
     badge: "Full Time",
+    theme: {
+      btn: "bg-[#6a4cfc]",
+      hover: "hover:bg-[#5235d9]",
+      badgeBg: "bg-purple-50",
+      badgeText: "text-[#6a4cfc]",
+    },
   },
 ];
 
 export default function FeaturedJobs() {
   return (
-    <section className="py-12 bg-slate-50/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#0b1220]">
-            Featured Jobs
-          </h2>
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#f8f9ff] via-[#f0f4ff] to-[#f4eeff] py-16 lg:py-24">
+      {/* Abstract Background Elements */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100/40 rounded-full blur-[100px] -translate-x-1/4 translate-y-1/4"></div>
+
+      {/* Dot Patterns */}
+      <div className="absolute top-10 left-10 grid grid-cols-4 gap-3 opacity-20">
+        {[...Array(16)].map((_, i) => (
+          <div
+            key={`dot-tl-${i}`}
+            className="w-1.5 h-1.5 bg-gray-400 rounded-full"
+          ></div>
+        ))}
+      </div>
+      <div className="absolute bottom-10 right-10 grid grid-cols-4 gap-3 opacity-20">
+        {[...Array(16)].map((_, i) => (
+          <div
+            key={`dot-br-${i}`}
+            className="w-1.5 h-1.5 bg-gray-400 rounded-full"
+          ></div>
+        ))}
+      </div>
+
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+          <div>
+            <h2 className="text-3xl md:text-[38px] font-extrabold text-[#0f172a] tracking-tight">
+              Featured Jobs
+            </h2>
+            <p className="mt-3 text-base text-gray-500 font-medium">
+              Top opportunities from leading companies. Apply now and take the
+              next step in your career.
+            </p>
+          </div>
           <a
             href="#"
-            className="text-xs sm:text-sm font-semibold text-[#2f6fff] hover:underline flex items-center gap-1 cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#2f6fff] hover:text-[#2052c9] transition-colors"
           >
-            View all jobs →
+            View all jobs
+            <ArrowRight className="w-4 h-4" />
           </a>
         </div>
 
-        {/* 6-Column Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+        {/* Jobs Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6">
           {jobs.map((job) => (
-            <article
+            <div
               key={job.id}
-              className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 flex flex-col justify-between min-h-[340px]"
+              className="group flex flex-col bg-white rounded-[20px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-300 relative border border-gray-100"
             >
-              {/* Top Content (Stacked Vertically) */}
-              <div className="flex flex-col items-start text-left">
-                {/* Logo */}
-                <div className="w-16 h-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center mb-4 p-3 border border-gray-200/50">
-                  <Image
-                    src={job.logo}
-                    alt={`${job.company} logo`}
-                    width={48}
-                    height={48}
-                    className="object-contain"
-                  />
-                </div>
+              {/* Bookmark Icon */}
+              <button className="absolute top-5 right-5 text-gray-300 hover:text-gray-500 transition-colors z-10">
+                <Bookmark className="w-5 h-5" strokeWidth={2} />
+              </button>
 
-                {/* Job Title & Company */}
-                <h3 className="text-base font-bold text-[#0b1220] tracking-tight line-clamp-2 leading-snug">
-                  {job.title}
-                </h3>
-                <span className="text-sm text-gray-500 font-semibold mt-1.5">
-                  {job.company}
-                </span>
-
-                {/* Info Metadata */}
-                <div className="mt-5 space-y-2.5 text-xs text-gray-500 font-medium w-full">
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="w-3.5 h-3.5 text-gray-400 shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <span className="line-clamp-1">{job.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="w-3.5 h-3.5 text-gray-400 shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>{job.salary}</span>
+              {/* Header: Logo + Title + Company in ONE ROW */}
+              <div className="flex items-start gap-3 mb-6 pr-6">
+                {/* Company Logo Box */}
+                <div className="w-[46px] h-[46px] shrink-0 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center p-2 mt-0.5">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={job.logo}
+                      alt={job.company}
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                 </div>
 
-                {/* Badge */}
-                <div className="mt-4">
-                  <span className="inline-block text-[10px] bg-purple-50 text-[#8b5cf6] px-2.5 py-1 rounded-md font-semibold tracking-wide">
-                    {job.badge}
+                {/* Title & Company Wrapper */}
+                <div className="flex flex-col">
+                  <h3 className="text-[16px] font-bold text-slate-900 leading-tight mb-1">
+                    {job.title}
+                  </h3>
+                  <div className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-600">
+                    {job.company}
+                    {/* Verified Badge */}
+                    <svg
+                      className="w-[14px] h-[14px] text-[#2f6fff]"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Location & Salary */}
+              <div className="flex flex-col gap-2.5 mb-5">
+                <div className="flex items-center gap-2 text-gray-500">
+                  <MapPin className="w-[18px] h-[18px] stroke-[1.5]" />
+                  <span className="text-[13px] font-medium">
+                    {job.location}
                   </span>
                 </div>
+                <div className="flex items-center gap-2 text-gray-500">
+                  <CircleDollarSign className="w-[18px] h-[18px] stroke-[1.5]" />
+                  <span className="text-[13px] font-medium">{job.salary}</span>
+                </div>
               </div>
 
-              {/* Bottom Action Button */}
-              <div className="mt-5 w-full">
-                <button className="w-full cursor-pointer bg-[#3b52f6] hover:bg-[#253cc9] text-white py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-[0.98]">
+              {/* Push content down */}
+              <div className="mt-auto">
+                {/* Job Type Badge */}
+                <div
+                  className={`inline-block px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wide mb-6 ${job.theme.badgeBg} ${job.theme.badgeText}`}
+                >
+                  {job.badge}
+                </div>
+
+                {/* Apply Button */}
+                <button
+                  className={`w-full py-3 rounded-xl text-white text-[14px] font-semibold flex items-center justify-center gap-2 transition-colors ${job.theme.btn} ${job.theme.hover}`}
+                >
                   Apply Now
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-            </article>
+            </div>
           ))}
         </div>
       </div>
