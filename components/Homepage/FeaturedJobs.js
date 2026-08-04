@@ -15,8 +15,7 @@ const jobs = [
     salary: "₹12 - 20 LPA",
     badge: "Full Time",
     theme: {
-      btn: "bg-[#ed3833]",
-      hover: "hover:bg-[#d62823]",
+      btn: "bg-[#155DFC]",
       badgeBg: "bg-red-50",
       badgeText: "text-[#ed3833]",
     },
@@ -30,8 +29,7 @@ const jobs = [
     salary: "₹18 - 30 LPA",
     badge: "Full Time",
     theme: {
-      btn: "bg-[#2f6fff]",
-      hover: "hover:bg-[#2052c9]",
+      btn: "bg-[#155DFC]",
       badgeBg: "bg-blue-50",
       badgeText: "text-[#2f6fff]",
     },
@@ -45,8 +43,7 @@ const jobs = [
     salary: "₹15 - 28 LPA",
     badge: "Full Time",
     theme: {
-      btn: "bg-[#f58f0b]",
-      hover: "hover:bg-[#db7e07]",
+      btn: "bg-[#155DFC]",
       badgeBg: "bg-orange-50",
       badgeText: "text-[#f58f0b]",
     },
@@ -60,8 +57,7 @@ const jobs = [
     salary: "₹10 - 18 LPA",
     badge: "Full Time",
     theme: {
-      btn: "bg-[#e50914]",
-      hover: "hover:bg-[#b80710]",
+      btn: "bg-[#155DFC]",
       badgeBg: "bg-red-50",
       badgeText: "text-[#e50914]",
     },
@@ -75,8 +71,7 @@ const jobs = [
     salary: "₹20 - 35 LPA",
     badge: "Full Time",
     theme: {
-      btn: "bg-[#2b9e38]",
-      hover: "hover:bg-[#217d2c]",
+      btn: "bg-[#155DFC]",
       badgeBg: "bg-green-50",
       badgeText: "text-[#2b9e38]",
     },
@@ -90,8 +85,7 @@ const jobs = [
     salary: "₹25 - 40 LPA",
     badge: "Full Time",
     theme: {
-      btn: "bg-[#6a4cfc]",
-      hover: "hover:bg-[#5235d9]",
+      btn: "bg-[#155DFC]",
       badgeBg: "bg-purple-50",
       badgeText: "text-[#6a4cfc]",
     },
