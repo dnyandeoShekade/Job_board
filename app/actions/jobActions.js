@@ -1,5 +1,6 @@
 import { JOBS_DATA } from '@/data/jobs';
 import { JOB_DETAILS } from '@/data/jobDetails';
+import { DASHBOARD_DATA, ALL_APPLICATIONS, PROFILE_DATA } from '@/data/dashboardData';
 
 // API Configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
@@ -93,3 +94,39 @@ export async function getJobBySlug(slug) {
 //     return getJobBySlug(slug);
 //   }
 // }
+
+/**
+ * Get dashboard data
+ */
+export async function getDashboardData() {
+  try {
+    return createResponse(true, DASHBOARD_DATA, null);
+  } catch (error) {
+    console.error('getDashboardData error:', error);
+    return createResponse(false, null, 'Failed to fetch dashboard data');
+  }
+}
+
+/**
+ * Get all applications
+ */
+export async function getAllApplications() {
+  try {
+    return createResponse(true, ALL_APPLICATIONS, null);
+  } catch (error) {
+    console.error('getAllApplications error:', error);
+    return createResponse(false, null, 'Failed to fetch applications');
+  }
+}
+
+/**
+ * Get profile data
+ */
+export async function getProfileData() {
+  try {
+    return createResponse(true, PROFILE_DATA, null);
+  } catch (error) {
+    console.error('getProfileData error:', error);
+    return createResponse(false, null, 'Failed to fetch profile data');
+  }
+}
