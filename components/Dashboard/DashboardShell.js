@@ -16,7 +16,7 @@ export default function DashboardShell({ user, notifications, children }) {
           notifications={notifications}
           onMenuClick={() => setSidebarOpen(true)}
         />
-        <main className="flex-1 p-4 sm:p-6 overflow-auto">
+        <main className="flex-1 p-4 sm:p-4 overflow-auto">
           {children}
         </main>
       </div>

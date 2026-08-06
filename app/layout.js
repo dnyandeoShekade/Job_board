@@ -1,7 +1,6 @@
 import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "../components/common/Navbar";
-import Footer from "../components/common/Footer";
+import ConditionalLayout from "../components/common/ConditionalLayout";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -26,9 +25,7 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-        <Footer />
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   );
