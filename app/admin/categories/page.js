@@ -1,4 +1,4 @@
-import { getCategoriesData } from "../../actions/adminActions";
+import { getCategoriesData } from "../../actions/jobActions";
 import CategoriesPage from "../../../components/Admin/CategoriesPage";
 
 export default async function Categories() {

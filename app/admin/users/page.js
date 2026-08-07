@@ -1,4 +1,4 @@
-import { getUsersData } from "../../actions/adminActions";
+import { getUsersData } from "../../actions/jobActions";
 import UsersPage from "../../../components/Admin/UsersPage";
 
 export default async function Users() {

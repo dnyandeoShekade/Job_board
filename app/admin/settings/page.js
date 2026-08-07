@@ -1,4 +1,4 @@
-import { getAdminSettingsData } from "../../actions/adminActions";
+import { getAdminSettingsData } from "../../actions/jobActions";
 import AdminSettingsPage from "../../../components/Admin/AdminSettingsPage";
 
 export default async function AdminSettings() {

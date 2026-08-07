@@ -1,29 +1,29 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { 
-  Bookmark, 
-  Send, 
-  MapPin, 
-  Briefcase, 
-  Clock, 
-  Eye, 
-  IndianRupee, 
-  Calendar, 
-  CheckCircle2, 
-  Link as LinkIcon, 
-  ChevronRight, 
-  Check 
-} from 'lucide-react';
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Bookmark,
+  Send,
+  MapPin,
+  Briefcase,
+  Clock,
+  Eye,
+  IndianRupee,
+  Calendar,
+  CheckCircle2,
+  Link as LinkIcon,
+  ChevronRight,
+  Check,
+} from "lucide-react";
 import {
   FaWhatsapp,
   FaLinkedinIn,
   FaFacebookF,
   FaXTwitter,
 } from "react-icons/fa6";
-import Breadcrumb from '@/components/common/Breadcrumb';
+import Breadcrumb from "@/components/common/Breadcrumb";
 
 export default function JobDetails({ job }) {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -36,44 +36,47 @@ export default function JobDetails({ job }) {
   };
 
   const breadcrumbItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Jobs', href: '/job' },
-    { label: job.title, href: null }
+    { label: "Home", href: "/" },
+    { label: "Jobs", href: "/job" },
+    { label: job.title, href: null },
   ];
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans pb-16">
-      
       {/* Breadcrumb Header */}
       <Breadcrumb items={breadcrumbItems} />
 
       {/* Main Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
         {/* Left Column: Job Main Content & Description */}
         <div className="lg:col-span-8 space-y-6">
-          
           {/* Top Job Summary Card */}
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm relative">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="flex items-start gap-6">
                 <div className="w-30 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center p-3 shrink-0">
                   {job.logoUrl ? (
-                    <Image 
-                      src={job.logoUrl} 
+                    <Image
+                      src={job.logoUrl}
                       alt={`${job.company} logo`}
                       width={80}
                       height={40}
                       className="object-contain"
                     />
                   ) : (
-                    <span className="text-2xl font-bold text-slate-700">{job.logo}</span>
+                    <span className="text-2xl font-bold text-slate-700">
+                      {job.logo}
+                    </span>
                   )}
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{job.title}</h1>
+                  <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+                    {job.title}
+                  </h1>
                   <div className="flex items-center gap-1.5 mt-1 text-slate-500 text-sm">
-                    <span className="font-medium text-slate-700">{job.company}</span>
+                    <span className="font-medium text-slate-700">
+                      {job.company}
+                    </span>
                     <CheckCircle2 className="w-4 h-4 text-blue-600 fill-blue-50" />
                   </div>
                 </div>
@@ -81,15 +84,22 @@ export default function JobDetails({ job }) {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <button 
+                <button
                   onClick={() => setIsBookmarked(!isBookmarked)}
                   className={`w-11 h-11 rounded-xl border border-slate-200 flex items-center justify-center transition ${
-                    isBookmarked ? 'bg-indigo-50 border-indigo-200 text-indigo-600' : 'bg-white text-slate-600 hover:bg-slate-50'
+                    isBookmarked
+                      ? "bg-indigo-50 border-indigo-200 text-indigo-600"
+                      : "bg-white text-slate-600 hover:bg-slate-50"
                   }`}
                 >
-                  <Bookmark className={`w-5 h-5 ${isBookmarked ? 'fill-indigo-600' : ''}`} />
+                  <Bookmark
+                    className={`w-5 h-5 ${isBookmarked ? "fill-indigo-600" : ""}`}
+                  />
                 </button>
-                <Link href={`/job/${job.slug || 'frontend-developer-google'}/apply`} className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm shadow-indigo-500/20 text-sm">
+                <Link
+                  href={`/job/${job.slug}/apply`}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm shadow-indigo-500/20 text-sm"
+                >
                   <Send className="w-4 h-4" />
                   <span>Apply Now</span>
                 </Link>
@@ -123,28 +133,38 @@ export default function JobDetails({ job }) {
                   <IndianRupee className="w-3.5 h-3.5" />
                   <span>Salary</span>
                 </div>
-                <div className="font-semibold text-slate-900 text-sm sm:text-base">{job.salary}</div>
+                <div className="font-semibold text-slate-900 text-sm sm:text-base">
+                  {job.salary}
+                </div>
               </div>
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
                 <div className="text-slate-400 text-xs flex items-center gap-1.5 mb-1">
                   <Briefcase className="w-3.5 h-3.5" />
                   <span>Experience</span>
                 </div>
-                <div className="font-semibold text-slate-900 text-sm sm:text-base">{job.experience}</div>
+                <div className="font-semibold text-slate-900 text-sm sm:text-base">
+                  {job.experience}
+                </div>
               </div>
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
                 <div className="text-slate-400 text-xs flex items-center gap-1.5 mb-1">
-                  <span className="w-3.5 h-3.5 flex items-center justify-center font-bold">#</span>
+                  <span className="w-3.5 h-3.5 flex items-center justify-center font-bold">
+                    #
+                  </span>
                   <span>Category</span>
                 </div>
-                <div className="font-semibold text-slate-900 text-sm sm:text-base truncate">{job.category}</div>
+                <div className="font-semibold text-slate-900 text-sm sm:text-base truncate">
+                  {job.category}
+                </div>
               </div>
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
                 <div className="text-slate-400 text-xs flex items-center gap-1.5 mb-1">
                   <Clock className="w-3.5 h-3.5" />
                   <span>Job Type</span>
                 </div>
-                <div className="font-semibold text-slate-900 text-sm sm:text-base">{job.type}</div>
+                <div className="font-semibold text-slate-900 text-sm sm:text-base">
+                  {job.type}
+                </div>
               </div>
             </div>
           </div>
@@ -153,7 +173,9 @@ export default function JobDetails({ job }) {
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6 text-slate-700">
             {job.description && (
               <div>
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Job Description</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-2">
+                  Job Description
+                </h2>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   {job.description}
                 </p>
@@ -163,7 +185,9 @@ export default function JobDetails({ job }) {
             {/* Key Responsibilities */}
             {job.responsibilities && job.responsibilities.length > 0 && (
               <div>
-                <h3 className="font-bold text-slate-900 mb-3 text-sm">Key Responsibilities</h3>
+                <h3 className="font-bold text-slate-900 mb-3 text-sm">
+                  Key Responsibilities
+                </h3>
                 <ul className="space-y-2 text-sm text-slate-600">
                   {job.responsibilities.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
@@ -178,7 +202,9 @@ export default function JobDetails({ job }) {
             {/* Requirements */}
             {job.requirements && job.requirements.length > 0 && (
               <div>
-                <h3 className="font-bold text-slate-900 mb-3 text-sm">Requirements</h3>
+                <h3 className="font-bold text-slate-900 mb-3 text-sm">
+                  Requirements
+                </h3>
                 <ul className="space-y-2 text-sm text-slate-600">
                   {job.requirements.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
@@ -193,7 +219,9 @@ export default function JobDetails({ job }) {
             {/* Nice to Have */}
             {job.niceToHave && job.niceToHave.length > 0 && (
               <div>
-                <h3 className="font-bold text-slate-900 mb-3 text-sm">Nice to Have</h3>
+                <h3 className="font-bold text-slate-900 mb-3 text-sm">
+                  Nice to Have
+                </h3>
                 <ul className="space-y-2 text-sm text-slate-600">
                   {job.niceToHave.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
@@ -205,20 +233,20 @@ export default function JobDetails({ job }) {
               </div>
             )}
           </div>
-
         </div>
 
         {/* Right Column: Sidebar Panels */}
         <div className="lg:col-span-4 space-y-6">
-          
           {/* About Company Widget */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h3 className="font-bold text-slate-900 text-base">About Company</h3>
+            <h3 className="font-bold text-slate-900 text-base">
+              About Company
+            </h3>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center p-2 shadow-sm font-bold text-lg">
                 {job.logoUrl ? (
-                  <Image 
-                    src={job.logoUrl} 
+                  <Image
+                    src={job.logoUrl}
                     alt={`${job.company} logo`}
                     width={32}
                     height={32}
@@ -236,7 +264,8 @@ export default function JobDetails({ job }) {
               </div>
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
-              {job.company} is a leading technology company dedicated to innovation and excellence in the industry.
+              {job.company} is a leading technology company dedicated to
+              innovation and excellence in the industry.
             </p>
             <button className="text-xs text-indigo-600 font-semibold hover:underline flex items-center gap-1 pt-1">
               <span>View Company Profile</span>
@@ -249,12 +278,17 @@ export default function JobDetails({ job }) {
             <h3 className="font-bold text-slate-900 text-base">Job Overview</h3>
             <div className="space-y-4 text-sm text-slate-600">
               {[
-                { icon: Calendar, label: 'Posted On', value: job.postedDate },
-                { icon: Briefcase, label: 'Employment Type', value: job.type },
-                { icon: Clock, label: 'Experience', value: job.experience },
-                { icon: MapPin, label: 'Location', value: job.location },
-                { icon: IndianRupee, label: 'Salary', value: job.salary },
-                { icon: null, label: 'Category', value: job.category, customIcon: '#' }
+                { icon: Calendar, label: "Posted On", value: job.postedDate },
+                { icon: Briefcase, label: "Employment Type", value: job.type },
+                { icon: Clock, label: "Experience", value: job.experience },
+                { icon: MapPin, label: "Location", value: job.location },
+                { icon: IndianRupee, label: "Salary", value: job.salary },
+                {
+                  icon: null,
+                  label: "Category",
+                  value: job.category,
+                  customIcon: "#",
+                },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-start gap-3">
                   {item.customIcon ? (
@@ -266,7 +300,9 @@ export default function JobDetails({ job }) {
                   )}
                   <div>
                     <div className="text-xs text-slate-400">{item.label}</div>
-                    <div className="font-medium text-slate-800">{item.value}</div>
+                    <div className="font-medium text-slate-800">
+                      {item.value}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -275,7 +311,9 @@ export default function JobDetails({ job }) {
 
           {/* Share this job Widget */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <h3 className="font-bold text-slate-900 text-base">Share this job</h3>
+            <h3 className="font-bold text-slate-900 text-base">
+              Share this job
+            </h3>
 
             <div className="flex items-center gap-2">
               <button
@@ -319,9 +357,7 @@ export default function JobDetails({ job }) {
               </button>
             </div>
           </div>
-
         </div>
-
       </div>
 
       {/* Bottom Sticky CTA Banner */}
@@ -332,17 +368,24 @@ export default function JobDetails({ job }) {
               <Send className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Ready to apply for this job?</h3>
-              <p className="text-sm text-slate-500 mt-0.5">Join thousands of successful candidates who found their dream jobs with us.</p>
+              <h3 className="text-lg font-bold text-slate-900">
+                Ready to apply for this job?
+              </h3>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Join thousands of successful candidates who found their dream
+                jobs with us.
+              </p>
             </div>
           </div>
-          <Link href={`/job/${job.slug || 'frontend-developer-google'}/apply`} className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition flex items-center gap-2 shadow-sm shadow-indigo-500/20 text-sm whitespace-nowrap w-full sm:w-auto justify-center">
+          <Link
+            href={`/job/${job.slug || "frontend-developer-google"}/apply`}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition flex items-center gap-2 shadow-sm shadow-indigo-500/20 text-sm whitespace-nowrap w-full sm:w-auto justify-center"
+          >
             <Send className="w-4 h-4" />
             <span>Apply Now</span>
           </Link>
         </div>
       </div>
-
     </div>
   );
 }

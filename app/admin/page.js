@@ -1,4 +1,4 @@
-import { getAdminDashboardData } from "../actions/adminActions";
+import { getAdminDashboardData } from "../actions/jobActions";
 import AdminDashboard from "../../components/Admin/AdminDashboard";
 
 export default async function AdminDashboardPage() {

@@ -1,20 +1,63 @@
 "use client";
 
 import { useState } from "react";
+import { registerUser } from "@/services/authService";
 import Link from "next/link";
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  User,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("Candidate");
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    try {
+      const result = await registerUser({
+        name,
+        email,
+        password,
+      });
+
+      console.log(result);
+
+      if (result.success) {
+        alert("Registration Successful!");
+
+        setName("");
+        setEmail("");
+        setPassword("");
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen flex bg-slate-50/50">
       {/* Left Side - Modern Brand/Image Section */}
       <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/image/person.jpg')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
-        
+
         <div className="relative z-10 flex flex-col justify-between p-12 text-white w-full">
           {/* Logo Header */}
           <div className="flex items-center gap-3">
@@ -23,16 +66,17 @@ export default function SignupPage() {
             </div>
             <span className="text-xl font-bold tracking-tight">JobPortal</span>
           </div>
-          
+
           {/* Middle Content / Testimonial / Value Prop */}
           <div className="space-y-6 my-auto">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold tracking-wide uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
               The #1 Career Platform
             </div>
-            
+
             <blockquote className="text-2xl font-bold leading-snug text-slate-100 tracking-tight">
-              "Start your journey with us and discover opportunities tailored for your growth."
+              "Start your journey with us and discover opportunities tailored
+              for your growth."
             </blockquote>
 
             <div className="space-y-2.5 pt-2">
@@ -66,7 +110,8 @@ export default function SignupPage() {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {" "}
             {/* User Role Selector (Interactive Pills matching reference style) */}
             <div>
               <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
@@ -97,7 +142,6 @@ export default function SignupPage() {
                 </button>
               </div>
             </div>
-
             {/* Name Input */}
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
@@ -107,12 +151,13 @@ export default function SignupPage() {
                 <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="w-full text-xs sm:text-sm pl-11 pr-4 py-2.5 border border-slate-200 rounded-lg bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition text-slate-800 font-medium"
                   placeholder="John Doe"
                 />
               </div>
             </div>
-
             {/* Email Input */}
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
@@ -122,12 +167,13 @@ export default function SignupPage() {
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full text-xs sm:text-sm pl-11 pr-4 py-2.5 border border-slate-200 rounded-lg bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition text-slate-800 font-medium"
                   placeholder="john@example.com"
                 />
               </div>
             </div>
-
             {/* Password Input */}
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
@@ -137,6 +183,8 @@ export default function SignupPage() {
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full text-xs sm:text-sm pl-11 pr-11 py-2.5 border border-slate-200 rounded-lg bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition text-slate-800 font-medium"
                   placeholder="••••••••"
                 />
@@ -153,25 +201,24 @@ export default function SignupPage() {
                 </button>
               </div>
             </div>
-
             {/* Sign Up Button */}
             <button
               type="submit"
               className="w-full bg-indigo-600 text-white py-2.5 rounded-lg text-xs sm:text-sm font-semibold hover:bg-indigo-700 transition shadow-sm shadow-indigo-100 flex items-center justify-center gap-1.5 cursor-pointer mt-2"
             >
-              Sign up as {role} <ArrowRight className="w-4 h-4" />
+              {loading ? "Creating Account..." : `Sign up as ${role}`}{" "}
             </button>
-
             {/* Divider */}
             <div className="relative my-5">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-slate-200"></div>
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-3 bg-white text-slate-400 uppercase tracking-wider font-semibold text-[10px]">Or continue with</span>
+                <span className="px-3 bg-white text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                  Or continue with
+                </span>
               </div>
             </div>
-
             {/* Google Sign Up */}
             <button
               type="button"
@@ -197,7 +244,6 @@ export default function SignupPage() {
               </svg>
               Google
             </button>
-
             {/* Login Link */}
             <p className="text-center text-xs sm:text-sm text-slate-600 mt-5">
               Already have an account?{" "}

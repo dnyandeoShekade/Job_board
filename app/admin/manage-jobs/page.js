@@ -1,4 +1,4 @@
-import { getManageJobsData } from "../../actions/adminActions";
+import { getManageJobsData } from "../../actions/jobActions";
 import ManageJobsPage from "../../../components/Admin/ManageJobsPage";
 
 export default async function ManageJobs() {

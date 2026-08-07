@@ -1,4 +1,4 @@
-import { getReportsData } from "../../actions/adminActions";
+import { getReportsData } from "../../actions/jobActions";
 import ReportsPage from "../../../components/Admin/ReportsPage";
 
 export default async function Reports() {

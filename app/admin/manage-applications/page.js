@@ -1,4 +1,4 @@
-import { getManageApplicationsData } from "../../actions/adminActions";
+import { getManageApplicationsData } from "../../actions/jobActions";
 import ManageApplicationsPage from "../../../components/Admin/ManageApplicationsPage";
 
 export default async function ManageApplications() {

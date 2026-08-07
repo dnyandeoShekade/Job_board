@@ -3,13 +3,48 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
-
+import { loginUser } from "@/services/authService";
+import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [email, setEmail] = useState("alex.jordan@gmail.com");
-  const [password, setPassword] = useState("••••••••");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    setLoading(true);
+
+    try {
+      const result = await loginUser({
+        email,
+        password,
+      });
+
+      console.log(result);
+
+      if (result.success) {
+        // Save Token
+        localStorage.setItem("token", result.token);
+
+        // Save User
+        localStorage.setItem("user", JSON.stringify(result.user));
+
+        alert("Login Successful!");
+
+        router.push("/dashboard");
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Image Section */}
@@ -21,16 +56,20 @@ export default function LoginPage() {
             <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-md">
               <div className="w-4 h-4 bg-indigo-600 rounded"></div>
             </div>
-            <span className="text-lg font-extrabold tracking-tight">JobPortal</span>
+            <span className="text-lg font-extrabold tracking-tight">
+              JobPortal
+            </span>
           </div>
-          
+
           <div>
             <blockquote className="text-xl sm:text-2xl font-semibold leading-relaxed mb-4">
               "Simply all the tools that my team and I need."
             </blockquote>
             <div>
               <p className="font-bold text-sm">Karen Yue</p>
-              <p className="text-xs text-indigo-200">Director of Digital Marketing Technology</p>
+              <p className="text-xs text-indigo-200">
+                Director of Digital Marketing Technology
+              </p>
             </div>
           </div>
         </div>
@@ -44,11 +83,12 @@ export default function LoginPage() {
               Welcome back to JobPortal
             </h1>
             <p className="text-xs sm:text-sm text-slate-500">
-              Access your dashboard, manage job listings, and accelerate your career.
+              Access your dashboard, manage job listings, and accelerate your
+              career.
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Email Input */}
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
@@ -104,7 +144,9 @@ export default function LoginPage() {
 
             {/* Remember Me Toggle */}
             <div className="flex items-center justify-between py-1">
-              <span className="text-xs sm:text-sm text-slate-600 font-medium">Remember sign in details</span>
+              <span className="text-xs sm:text-sm text-slate-600 font-medium">
+                Remember sign in details
+              </span>
               <button
                 type="button"
                 onClick={() => setRememberMe(!rememberMe)}
@@ -125,7 +167,7 @@ export default function LoginPage() {
               type="submit"
               className="w-full bg-indigo-600 text-white py-2.5 rounded-lg text-xs sm:text-sm font-semibold hover:bg-indigo-700 transition shadow-sm shadow-indigo-100 flex items-center justify-center gap-1.5 cursor-pointer mt-1"
             >
-              Log in <ArrowRight className="w-4 h-4" />
+              {loading ? "Logging in..." : "Login"}
             </button>
 
             {/* Divider */}
@@ -134,7 +176,9 @@ export default function LoginPage() {
                 <div className="w-full border-t border-slate-200"></div>
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-3 bg-white text-slate-400 uppercase tracking-wider font-semibold text-[10px]">Or continue with</span>
+                <span className="px-3 bg-white text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                  Or continue with
+                </span>
               </div>
             </div>
 
