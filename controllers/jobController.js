@@ -1,24 +1,16 @@
+
 const Job = require("../models/Job");
-
-{
-  /*What This Does
-
-Receives data from frontend
- Saves job in MongoDB
- Sends response back*/
-}
+const slugify = require("slugify");
+const User = require("../models/User");
 
 // Add new job
-
 const createJob = async (req, res) => {
   try {
-    // Get data from frontend
-    const { title, company, location, salary, description, category } =
-      req.body;
+    const { title, company, location, salary, description, category } = req.body;
 
-    // Creates and saves new job document.
     const job = await Job.create({
       title,
+      slug: slugify(title, { lower: true, strict: true }),
       company,
       location,
       salary,
@@ -26,151 +18,179 @@ const createJob = async (req, res) => {
       category,
     });
 
-    // Sends JSON response to frontend
     res.status(201).json({
       success: true,
       message: "job created successfully",
       job,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
 
 const getALlJobs = async (req, res) => {
   try {
-    //  get keyword from URL query
     const keyword = req.query.keyword || "";
-    const keyword = req.query.location || "";
-    const keywrod = req.query.category ||"";
-
-    // search jobs
+    const location = req.query.location || "";
+    const category = req.query.category || "";
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
 
     const jobs = await Job.find({
+      title: { $regex: keyword, $options: "i" },
+      location: { $regex: location, $options: "i" },
+      category: { $regex: category, $options: "i" },
+    })
+      .skip(skip)
+      .limit(limit);
 
-      title: {
-        $regex: keyword, 
-        $options: "i",   //case insensitive
-      },
-      location:{
-        $regex:location,
-        $options:"i",
-      },
-      category:{
-        $regex:keyword,
-        $options:"i",
-      }
-    });
-    // send response
+    const totalJobs = await Job.countDocuments();
+
     res.status(200).json({
       success: true,
       count: jobs.length,
+      totalJobs,
+      page,
       jobs,
     });
   } catch (error) {
-    res.status(500).json({
-      success:false,
-      message:"sever error ",
-      error:error.message,
-    });
+    res.status(500).json({ success: false, message: "server error", error: error.message });
   }
 };
+
+// ---- JOB DETAIL PAGE API (by slug) ----
 const getSingleJob = async (req, res) => {
   try {
-    // get job id from url
-    const jobId = req.params.id;
+    const job = await Job.findOne({ slug: req.params.slug });
 
-    // find job by ID
-    const job = await Job.findById(jobId);
-    // check if job exists
     if (!job) {
-      return res.status(404).json({
-        success: false,
-        message: "job not found",
-      });
+      return res.status(404).json({ success: false, message: "Job not found" });
     }
-    // send response
+
+    // Optional: view count increment (matches "Views" shown on frontend)
+    job.views = (job.views || 0) + 1;
+    await job.save();
+
     res.status(200).json({
       success: true,
-      job,
+      data: job, // frontend JobDetails expects `job.data` from getJobBySlugData -> ensure service returns data:job
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
 
 const updateJob = async (req, res) => {
   try {
-    // get job id from url
     const jobId = req.params.id;
+    const updatedJob = await Job.findByIdAndUpdate(jobId, req.body, { new: true });
 
-    // update job After updating, give me updated document
-    const updatedJob = await Job.findByIdAndUpdate(jobId, req.body, {
-      returnDocument: "after", //Return document AFTER update.
-    });
-    // check if job exists
     if (!updatedJob) {
-      return res.status(404).json({
-        success: false,
-        message: "JOb not found",
-      });
+      return res.status(404).json({ success: false, message: "Job not found" });
     }
-    // send response
-    res.status(200).json({
-      success: true,
-      message: "job updated successfully",
-      updatedJob,
-    });
+
+    res.status(200).json({ success: true, message: "job updated successfully", updatedJob });
   } catch (error) {
-    res.status(500).json({
-      message: "server error",
-      error: error.message,
-    });
+    res.status(500).json({ message: "server error", error: error.message });
   }
 };
-{
-  /*
-✅ DELETE request
-✅ Removing MongoDB document
-✅ findByIdAndDelete()
-✅ API cleanup
-*/
-}
+
 const deleteJob = async (req, res) => {
   try {
-    // get job ID From URL
     const jobId = req.params.id;
+    const deletedJob = await Job.findByIdAndDelete(jobId);
 
-    // delete job
-    const deleteJOb = await Job.findByIdAndDelete(jobId);
-
-    // check it job exists
     if (!deletedJob) {
-      return res.status(404).json({
-        success: false,
-        message: "job not found",
-      });
+      return res.status(404).json({ success: false, message: "job not found" });
     }
-    // send response
-    res.status(200).json({
-      success: true,
-      message: "Job deleted successfully",
-    });
+
+    res.status(200).json({ success: true, message: "Job deleted successfully" });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
 
-module.exports = { createJob, getALlJobs, getSingleJob, updateJob, deleteJob };
+const saveJob = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const jobId = req.params.jobId;
+
+    if (user.savedJobs.includes(jobId)) {
+      return res.status(400).json({ success: false, message: "Job already saved" });
+    }
+
+    user.savedJobs.push(jobId);
+    await user.save();
+
+    res.status(200).json({ success: true, message: "Job saved successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getSavedJobs = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate("savedJobs");
+
+    res.status(200).json({
+      success: true,
+      count: user.savedJobs.length,
+      savedJobs: user.savedJobs,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error", error: error.message });
+  }
+};
+
+const removeSavedJob = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const { jobId } = req.params;
+
+    user.savedJobs = user.savedJobs.filter((id) => id.toString() !== jobId);
+    await user.save();
+
+    res.status(200).json({ success: true, message: "Saved job removed successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error", error: error.message });
+  }
+};
+
+// Apply page data (job + support info)
+const getJobApplication = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const job = await Job.findOne({ slug });
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        job,
+        support: {
+          email: "support@jobportal.com",
+          phone: "+91 9876543210",
+          hours: "Mon - Fri, 9AM - 6PM",
+        },
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = {
+  createJob,
+  getALlJobs,
+  getSingleJob,
+  updateJob,
+  deleteJob,
+  saveJob,
+  getSavedJobs,
+  removeSavedJob,
+  getJobApplication,
+};
