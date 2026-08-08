@@ -46,3 +46,17 @@ export async function updateApplicationStatus(applicationId, status, token) {
 
   return await response.json();
 }
+
+
+// export async function getUserApplications(applicationId, status, token) {
+//   const response = await fetch(`${BASE_URL}/applications/${applicationId}`, {
+//     method: "PATCH",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({ status }),
+//   });
+
+//   return await response.json();
+// }

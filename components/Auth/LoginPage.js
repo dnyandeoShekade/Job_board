@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { loginUser } from "@/services/authService";
 import { useRouter } from "next/navigation";
 export default function LoginPage() {
@@ -26,11 +26,11 @@ export default function LoginPage() {
       console.log(result);
 
       if (result.success) {
-        // Save Token
-        localStorage.setItem("token", result.token);
-
-        // Save User
+        // Save User data only (JWT is in HTTP-only cookie)
         localStorage.setItem("user", JSON.stringify(result.user));
+
+        // Trigger auth change event to update navbar
+        window.dispatchEvent(new Event("authChange"));
 
         alert("Login Successful!");
 

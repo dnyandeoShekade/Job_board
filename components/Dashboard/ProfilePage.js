@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import {
   Pencil, Camera, MapPin, Link, GitBranch, Globe,
-  CheckCircle2, Circle, ChevronDown, Briefcase,
+  CheckCircle2, Circle, ChevronDown,
 } from 'lucide-react';
 
 export default function ProfilePage({ profile }) {
@@ -152,20 +152,6 @@ export default function ProfilePage({ profile }) {
         {/* ── Right: sidebar ── */}
         <div className="space-y-5">
 
-          {/* Profile Completion */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-            <h3 className="font-bold text-slate-900 text-sm mb-4">Profile Completion</h3>
-            <div className="flex flex-col items-center mb-4">
-              <CircleProgress value={profile.completion} />
-            </div>
-            <p className="text-xs text-slate-500 text-center mb-4">
-              Complete your profile to get more job recommendations.
-            </p>
-            <button className="w-full border border-indigo-600 text-indigo-600 text-sm font-semibold py-2 rounded-xl hover:bg-indigo-50 transition">
-              Improve Profile
-            </button>
-          </div>
-
           {/* Profile Strength */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
             <h3 className="font-bold text-slate-900 text-sm mb-3">Profile Strength</h3>
@@ -180,22 +166,6 @@ export default function ProfilePage({ profile }) {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Get better matches */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center shrink-0">
-                <Briefcase className="w-5 h-5 text-indigo-500" />
-              </div>
-              <div>
-                <p className="font-bold text-slate-900 text-sm">Get better job matches</p>
-                <p className="text-xs text-slate-500">Complete your profile to get personalized job recommendations.</p>
-              </div>
-            </div>
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-2 rounded-xl transition">
-              Add Skills
-            </button>
           </div>
 
         </div>
@@ -264,32 +234,6 @@ function SocialField({ icon, value, field, editing, onChange }) {
         className={`flex-1 text-sm bg-transparent focus:outline-none text-slate-700 min-w-0
           ${editing ? 'text-slate-900' : ''}`}
       />
-    </div>
-  );
-}
-
-function CircleProgress({ value }) {
-  const r = 44;
-  const circ = 2 * Math.PI * r;
-  const offset = circ - (value / 100) * circ;
-
-  return (
-    <div className="relative w-28 h-28 flex items-center justify-center">
-      <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r={r} fill="none" stroke="#e2e8f0" strokeWidth="8" />
-        <circle
-          cx="50" cy="50" r={r} fill="none"
-          stroke="#6366f1" strokeWidth="8"
-          strokeLinecap="round"
-          strokeDasharray={circ}
-          strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 0.6s ease' }}
-        />
-      </svg>
-      <div className="absolute text-center">
-        <p className="text-2xl font-bold text-slate-900">{value}%</p>
-        <p className="text-xs text-slate-400">Complete</p>
-      </div>
     </div>
   );
 }

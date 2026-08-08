@@ -115,9 +115,6 @@ export const DASHBOARD_DATA = {
 
   quickActions: [
     { label: 'Browse Jobs', sub: 'Find new opportunities', icon: 'search', href: '/job' },
-    { label: 'Update Resume', sub: 'Keep your profile updated', icon: 'file-text', href: '/dashboard/resume' },
-    { label: 'Job Alerts', sub: 'Manage your job alerts', icon: 'bell', href: '/dashboard/alerts' },
-    { label: 'Saved Jobs', sub: 'View your saved jobs', icon: 'bookmark', href: '/dashboard/saved' },
   ],
 
   notifications: 3,

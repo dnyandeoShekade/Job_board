@@ -3,18 +3,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LayoutDashboard, FolderOpen, Bookmark, User, FileText,
-  Bell, Settings, LogOut, X, BriefcaseBusiness, Sparkles,
+  LayoutDashboard,
+  LogOut,
+  X,
+  BriefcaseBusiness,
+  Sparkles,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-  { label: 'My Applications', icon: FolderOpen, href: '/dashboard/applications' },
-  { label: 'Saved Jobs', icon: Bookmark, href: '/dashboard/saved' },
-  { label: 'Profile', icon: User, href: '/dashboard/profile' },
-  { label: 'Resume', icon: FileText, href: '/dashboard/resume' },
-  { label: 'Job Alerts', icon: Bell, href: '/dashboard/alerts' },
-  { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
 ];
 
 export default function DashboardSidebar({ open, onClose }) {
@@ -31,10 +28,10 @@ export default function DashboardSidebar({ open, onClose }) {
       )}
 
       <aside className={`
-        fixed top-0 left-0 h-full w-68 bg-white border-r border-slate-200/80 z-30 flex flex-col
+        fixed top-0 left-0 h-screen w-68 bg-white border-r border-slate-200/80 z-30 flex flex-col
         transition-transform duration-300 ease-in-out shadow-sm lg:shadow-none
         ${open ? 'translate-x-0' : '-translate-x-full'}
-        lg:translate-x-0 lg:static lg:z-auto
+        lg:translate-x-0 lg:static lg:z-auto lg:h-screen
       `}>
         {/* Logo / Brand Header */}
         <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-100">
@@ -54,14 +51,14 @@ export default function DashboardSidebar({ open, onClose }) {
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
           {NAV_ITEMS.map(({ label, icon: Icon, href }) => {
             const active = pathname === href;
             return (
               <Link
                 key={label}
                 href={href}
-                className={`relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition group ${
+                className={`relative flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold transition group ${
                   active
                     ? 'bg-indigo-50/80 text-indigo-700 shadow-xs'
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
@@ -69,9 +66,9 @@ export default function DashboardSidebar({ open, onClose }) {
               >
                 {/* Active indicator bar */}
                 {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-indigo-600 rounded-r-full" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-indigo-600 rounded-r-full" />
                 )}
-                <Icon className={`w-4 h-4 shrink-0 transition-colors ${
+                <Icon className={`w-5 h-5 shrink-0 transition-colors ${
                   active ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600'
                 }`} />
                 <span className="tracking-tight">{label}</span>

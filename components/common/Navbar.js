@@ -1,11 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Menu, X, User, LogOut } from "lucide-react";
+import { logoutUser } from "@/services/logoutService";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check authentication status
+    const checkAuth = () => {
+      const userData = localStorage.getItem("user");
+      
+      if (userData) {
+        setIsAuthenticated(true);
+        setUser(JSON.parse(userData));
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    };
+
+    // Check on mount
+    checkAuth();
+
+    // Listen for auth changes
+    const handleAuthChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener("authChange", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("authChange", handleAuthChange);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      // Call backend to clear HTTP-only cookie
+      await logoutUser();
+      
+      // Remove user data from localStorage
+      localStorage.removeItem("user");
+      
+      // Update UI state
+      setIsAuthenticated(false);
+      setUser(null);
+      setIsOpen(false);
+      
+      // Trigger auth change event
+      window.dispatchEvent(new Event("authChange"));
+      
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Still clear local data even if backend call fails
+      localStorage.removeItem("user");
+      setIsAuthenticated(false);
+      setUser(null);
+      setIsOpen(false);
+      router.push("/");
+    }
+  };
 
   return (
     <header className="w-full bg-[#F2F5FF] border-b border-gray-200 sticky top-0 z-50">
@@ -46,37 +108,54 @@ export default function Header() {
             </li>
             <li>
               <Link
-                href="/companies"
+                href="/dashboard"
                 className="hover:text-indigo-600 transition"
               >
-                Companies
+                dashboard
               </Link>
             </li>
-            <li>
-              <Link href="/about" className="hover:text-indigo-600 transition">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/contact"
-                className="hover:text-indigo-600 transition"
-              >
-                Contact
-              </Link>
-            </li>
+           
+           
+           
           </ul>
         </nav>
 
         {/* Desktop Buttons */}
         <div className="hidden lg:flex items-center gap-3">
-          <Link href="/auth/login" className="px-5 py-2 text-sm font-medium text-indigo-600 border border-indigo-600 rounded-lg hover:bg-indigo-50 transition">
-            Login
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
+              >
+                <User className="w-4 h-4" />
+                <span>{user?.name || user?.fullName || "Dashboard"}</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 border border-red-600 rounded-lg hover:bg-red-50 transition"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/auth/login"
+                className="px-5 py-2 text-sm font-medium text-indigo-600 border border-indigo-600 rounded-lg hover:bg-indigo-50 transition"
+              >
+                Login
+              </Link>
 
-          <Link href="/auth/signup" className="px-5 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
-            Sign Up
-          </Link>
+              <Link
+                href="/auth/signup"
+                className="px-5 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -118,13 +197,44 @@ export default function Header() {
           </nav>
 
           <div className="flex flex-col gap-3 mt-6">
-            <Link href="/auth/login" className="w-full py-2 border rounded-lg bg-white hover:bg-gray-100 text-center" onClick={() => setIsOpen(false)}>
-              Login
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="w-full py-2 border rounded-lg bg-white hover:bg-gray-100 text-center flex items-center justify-center gap-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <User className="w-4 h-4" />
+                  {user?.name || user?.fullName || "Dashboard"}
+                </Link>
 
-            <Link href="/auth/signup" className="w-full py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 text-center" onClick={() => setIsOpen(false)}>
-              Sign Up
-            </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 text-center flex items-center justify-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="w-full py-2 border rounded-lg bg-white hover:bg-gray-100 text-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </Link>
+
+                <Link
+                  href="/auth/signup"
+                  className="w-full py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 text-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

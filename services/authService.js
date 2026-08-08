@@ -6,6 +6,7 @@ export const registerUser = async (userData) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(userData),
   });
 
@@ -13,12 +14,14 @@ export const registerUser = async (userData) => {
 
   return data;
 };
+
 export const loginUser = async (userData) => {
   const response = await fetch(`${BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(userData),
   });
 
