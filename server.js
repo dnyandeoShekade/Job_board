@@ -7,7 +7,6 @@ const jobRoutes = require("./routes/jobRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 
-
 require("dotenv").config(); //Loads secret variables from .env file.
 //Secrets stay secure ✅
 
@@ -17,24 +16,27 @@ const app = express(); //Creates Express application.
 connectDB(); //connect database
 
 // Create uploads folder if it doesn't exist
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Create uploads directory structure
-const uploadsDir = path.join(__dirname, 'uploads', 'resumes');
+const uploadsDir = path.join(__dirname, "uploads", "resumes");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log('✓ uploads/resumes directory created');
+  console.log("✓ uploads/resumes directory created");
 }
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Serve static files from uploads folder
 
-
 //middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
-  credentials: true, // Allow cookies to be sent
-})); //✅ Enables frontend requests with credentials
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true, // Allow cookies to be sent
+  }),
+); //✅ Enables frontend requests with credentials
 app.use(express.json()); //Converts incoming JSON data into JavaScript object.
 app.use(cookieParser()); // Parse cookies from incoming requests
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files

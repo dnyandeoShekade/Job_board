@@ -2,10 +2,10 @@ const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 
 // Verify the import
-if (typeof generateToken !== 'function') {
-  console.error('ERROR: generateToken is not a function!');
-  console.error('generateToken value:', generateToken);
-  throw new Error('generateToken module failed to load correctly');
+if (typeof generateToken !== "function") {
+  console.error("ERROR: generateToken is not a function!");
+  console.error("generateToken value:", generateToken);
+  throw new Error("generateToken module failed to load correctly");
 }
 
 // ================= Register User =================
@@ -229,7 +229,30 @@ const changePassword = async (req, res) => {
     });
   }
 };
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
 
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("GET ME ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
@@ -237,4 +260,5 @@ module.exports = {
   getProfile,
   updateProfile,
   changePassword,
+  getMe
 };

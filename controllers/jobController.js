@@ -1,33 +1,84 @@
-
 const Job = require("../models/Job");
 const slugify = require("slugify");
 const User = require("../models/User");
 
 // Add new job
+// const createJob = async (req, res) => {
+//   try {
+//     const { title, company, location, salary, description, category } = req.body;
+
+//     const job = await Job.create({
+//       title,
+//       slug: slugify(title, { lower: true, strict: true }),
+//       company,
+//       location,
+//       salary,
+//       description,
+//       category,
+//     });
+
+//     res.status(201).json({
+//       success: true,
+//       message: "job created successfully",
+//       job,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: "Server error", error: error.message });
+//   }
+// };
+
 const createJob = async (req, res) => {
   try {
-    const { title, company, location, salary, description, category } = req.body;
+    const { title, company, location, salary, category, description } =
+      req.body;
 
+    if (
+      !title ||
+      !company ||
+      !location ||
+      !salary ||
+      !category ||
+      !description
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    const slug = `${title}-${company}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    const companyLogo = req.file
+      ? `/uploads/company-logos/${req.file.filename}`
+      : "";
     const job = await Job.create({
       title,
-      slug: slugify(title, { lower: true, strict: true }),
+      slug,
       company,
       location,
       salary,
-      description,
       category,
+      description,
+      companyLogo,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "job created successfully",
+      message: "Job created successfully",
       job,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    console.error("CREATE JOB ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
-
 const getALlJobs = async (req, res) => {
   try {
     const keyword = req.query.keyword || "";
@@ -55,7 +106,9 @@ const getALlJobs = async (req, res) => {
       jobs,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "server error", error: error.message });
   }
 };
 
@@ -77,37 +130,81 @@ const getSingleJob = async (req, res) => {
       data: job, // frontend JobDetails expects `job.data` from getJobBySlugData -> ensure service returns data:job
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
 const updateJob = async (req, res) => {
   try {
-    const jobId = req.params.id;
-    const updatedJob = await Job.findByIdAndUpdate(jobId, req.body, { new: true });
+    const { slug } = req.params;
+    const job = await Job.findOne({ slug });
 
-    if (!updatedJob) {
-      return res.status(404).json({ success: false, message: "Job not found" });
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
     }
-
-    res.status(200).json({ success: true, message: "job updated successfully", updatedJob });
+    const { title, company, location, salary, category, description, status } =
+      req.body;
+    const updatedJob = await Job.findByIdAndUpdate(
+      job._id,
+      {
+        title,
+        company,
+        location,
+        salary,
+        category,
+        description,
+        status,
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Job updated successfully",
+      data: updatedJob,
+    });
   } catch (error) {
-    res.status(500).json({ message: "server error", error: error.message });
+    console.error("UPDATE JOB ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
 const deleteJob = async (req, res) => {
   try {
-    const jobId = req.params.id;
-    const deletedJob = await Job.findByIdAndDelete(jobId);
+    const { slug } = req.params;
+    const deletedJob = await Job.findOneAndDelete({ slug });
 
     if (!deletedJob) {
-      return res.status(404).json({ success: false, message: "job not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
     }
 
-    res.status(200).json({ success: true, message: "Job deleted successfully" });
+    return res.status(200).json({
+      success: true,
+      message: "Job deleted successfully",
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    console.error("DELETE JOB ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
@@ -117,7 +214,9 @@ const saveJob = async (req, res) => {
     const jobId = req.params.jobId;
 
     if (user.savedJobs.includes(jobId)) {
-      return res.status(400).json({ success: false, message: "Job already saved" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Job already saved" });
     }
 
     user.savedJobs.push(jobId);
@@ -139,7 +238,9 @@ const getSavedJobs = async (req, res) => {
       savedJobs: user.savedJobs,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", error: error.message });
   }
 };
 
@@ -151,9 +252,13 @@ const removeSavedJob = async (req, res) => {
     user.savedJobs = user.savedJobs.filter((id) => id.toString() !== jobId);
     await user.save();
 
-    res.status(200).json({ success: true, message: "Saved job removed successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Saved job removed successfully" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", error: error.message });
   }
 };
 

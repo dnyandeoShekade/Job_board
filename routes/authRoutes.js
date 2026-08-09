@@ -1,12 +1,13 @@
 const express = require("express");
 
 const {
-    registerUser,
-    loginUser,
-    logoutUser,
-    getProfile,
-    updateProfile,
-    changePassword
+  registerUser,
+  loginUser,
+  logoutUser,
+  getProfile,
+  updateProfile,
+  changePassword,
+  getMe,
 } = require("../controllers/authController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -19,10 +20,12 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", authMiddleware, logoutUser);
 router.get("/profile", authMiddleware, getProfile);
-router.put("/profile",authMiddleware,updateProfile)
-router.put("/change-password", authMiddleware, changePassword );
-module.exports = router;
+router.put("/profile", authMiddleware, updateProfile);
+router.get("/me", authMiddleware, getMe);
 
+router.put("/change-password", authMiddleware, changePassword);
+
+module.exports = router;
 
 // GET /api/auth/profile
 /*{

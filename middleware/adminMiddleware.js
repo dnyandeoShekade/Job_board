@@ -21,7 +21,7 @@
 // Admin Authorization Middleware
 const adminOnly = (req, res, next) => {
   // Check if logged-in user is admin
-  if (req.user.role !== "admin") {
+  if (req.user?.role !== "admin") {
     return res.status(403).json({
       success: false,
       message: "Access denied. Admin only.",
@@ -31,6 +31,24 @@ const adminOnly = (req, res, next) => {
   // Continue to next middleware
   next();
 };
+
+// module.exports = adminOnly;
+// const adminOnly = (req, res, next) => {
+//   console.log("ADMIN CHECK:", {
+//     id: req.user?._id,
+//     email: req.user?.email,
+//     role: req.user?.role,
+//   });
+
+//   if (req.user?.role !== "admin") {
+//     return res.status(403).json({
+//       success: false,
+//       message: "Access denied. Admin only.",
+//     });
+//   }
+
+//   next();
+// };
 
 module.exports = adminOnly;
 // Its purpose is to check whether the user is an admin before allowing access to certain routes.

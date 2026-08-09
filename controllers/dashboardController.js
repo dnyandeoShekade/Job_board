@@ -32,16 +32,10 @@ const getUserDashboard = async (req, res) => {
     // Calculate statistics
     const stats = {
       totalApplications: applications.length,
-
-      savedJobs: Array.isArray(user.savedJobs) ? user.savedJobs.length : 0,
-
       reviewed: applications.filter((app) => app.status === "Reviewed").length,
-
       selected: applications.filter((app) => app.status === "Selected").length,
-
       rejected: applications.filter((app) => app.status === "Rejected").length,
     };
-
     // Recent applications
     const recentApplications = applications.slice(0, 5).map((application) => ({
       _id: application._id,
