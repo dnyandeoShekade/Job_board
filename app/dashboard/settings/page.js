@@ -1,4 +1,4 @@
-import { getSettingsData } from '@/app/';
+import { getSettingsData } from '@/app/actions/jobActions';
 import SettingsPage from '@/components/Dashboard/SettingsPage';
 
 export const metadata = { title: 'Settings | JobPortal' };
