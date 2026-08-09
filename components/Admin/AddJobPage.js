@@ -53,7 +53,7 @@ const [logo, setLogo] = useState(null);
         formDataToSend.append("companyLogo", logo);
       }
 
-      const response = await fetch("http://localhost:5000/api/jobs", {
+      const response = await fetch("https://job-board-kup0.onrender.com/api/jobs", {
         method: "POST",
         credentials: "include",
         body: formDataToSend,
@@ -63,7 +63,7 @@ const [logo, setLogo] = useState(null);
       try {
         result = await response.json();
       } catch (jsonError) {
-        setMessage("Backend API error. Make sure the server is running at http://localhost:5000");
+        setMessage("Backend API error. Make sure the server is running at https://job-board-kup0.onrender.com/");
         return;
       }
 
