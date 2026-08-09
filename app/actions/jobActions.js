@@ -261,3 +261,17 @@ export async function getJobAlertsData() {
     };
   }
 }
+
+export async function getSettingsData() {
+  try {
+    const { SETTINGS_DATA } = await import("@/data/dashboardData");
+    return { success: true, data: SETTINGS_DATA };
+  } catch (error) {
+    console.error("SETTINGS ERROR:", error);
+    return {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+  }
+}
