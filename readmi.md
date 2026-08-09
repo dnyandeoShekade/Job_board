@@ -10,8 +10,8 @@ tokens
 protected routes
 real authentication system
 
-
 <!-- ----------------- -->
+
 Recommended Learning Flow
 Phase 1 → CRUD Mastery
 Users
@@ -28,8 +28,8 @@ Resume upload
 Search filters
 Pagination
 
-
 <!-- ------------------ -->
+
 Create Job Model
 
 Inside:
@@ -41,7 +41,6 @@ Then create:
 job controller
 job routes
 add job API
-
 
 <!-- Search + Filter Jobs
 
@@ -67,15 +66,13 @@ secure login
 
 Both are good next steps. -->
 
-
 GET http://localhost:5000/api/jobs?category=IT
 
 GET http://localhost:5000/api/jobs?keyword=frontend&location=pune&category=IT
 
-
 Best Next Feature
 
-Now you are ready for one of these:
+Now you are ready for one of the
 
 JWT Authentication 🔐
 Admin Role
@@ -84,13 +81,6 @@ Saved Jobs
 Sorting
 File Upload Resume
 Application Model
-
-
-
-
-
-
-
 
 Remaining Important Features
 
@@ -108,19 +98,15 @@ Remaining Important Features
 🔲 Frontend Integration (React/Next.js)
 
 9-6-2026
-📌 Remaining Tasks
-11. JWT Authentication
+📌 Remaining Tasks 11. JWT Authentication
 Login API
 Generate JWT token
-Verify token middleware
-12. Password Hashing
+Verify token middleware 12. Password Hashing
 Install bcryptjs
 Hash password during registration
-Compare password during login
-13. Protected Routes
+Compare password during login 13. Protected Routes
 Only logged-in users can apply for jobs
 Only admins can create/update/delete jobs
-
 
 ✅ Update Application Status
 JWT Authentication
@@ -147,11 +133,6 @@ Applications Page
 Profile Page
 ↓
 Login/Register (later)
-
-
-
-
-
 
 completed
 ✅ Completed Features (8 items):
@@ -180,11 +161,7 @@ Credits used: 0.15
 Elapsed time: 12s
 Revert
 
-
-
-
-
-passwrod 
+passwrod
 const bcrypt = require("bcryptjs");
 
 const hashedPassword = await bcrypt.hash(password, 10);
