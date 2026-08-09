@@ -1,6 +1,5 @@
 import { getResumeData } from '@/app/actions/jobActions';
 import ResumePage from '@/components/Dashboard/ResumePage';
-
 export const metadata = {
   title: 'My Resume | JobPortal',
 };

@@ -261,3 +261,59 @@ export async function getJobAlertsData() {
     };
   }
 }
+
+export async function getProfileData() {
+  try {
+    const { PROFILE_DATA } = await import("@/data/dashboardData");
+    return { success: true, data: PROFILE_DATA };
+  } catch (error) {
+    console.error("PROFILE ERROR:", error);
+    return {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+  }
+}
+
+export async function getResumeData() {
+  try {
+    const { RESUME_DATA } = await import("@/data/dashboardData");
+    return { success: true, data: RESUME_DATA };
+  } catch (error) {
+    console.error("RESUME ERROR:", error);
+    return {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+  }
+}
+
+export async function getSavedJobsData() {
+  try {
+    const { SAVED_JOBS_DATA } = await import("@/data/dashboardData");
+    return { success: true, data: SAVED_JOBS_DATA };
+  } catch (error) {
+    console.error("SAVED JOBS ERROR:", error);
+    return {
+      success: false,
+      data: [],
+      message: error.message,
+    };
+  }
+}
+
+export async function getSettingsData() {
+  try {
+    const { SETTINGS_DATA } = await import("@/data/dashboardData");
+    return { success: true, data: SETTINGS_DATA };
+  } catch (error) {
+    console.error("SETTINGS ERROR:", error);
+    return {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+  }
+}
