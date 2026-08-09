@@ -45,37 +45,39 @@ export default function Dashboard({ data }) {
     );
   }
 
-  const stats = [
-    {
-      label: "Total Applications",
-      value: data.totalApplications || 0,
-      sub: "Applications submitted",
-      icon: "briefcase",
-      color: "indigo",
-    },
-    {
-      label: "Reviewed",
-      value: data.reviewed || 0,
-      sub: "Applications reviewed",
-      icon: "check-circle",
-      color: "green",
-    },
-    {
-      label: "Selected",
-      value: data.selected || 0,
-      sub: "Applications selected",
-      icon: "clock",
-      color: "yellow",
-    },
-    {
-      label: "Rejected",
-      value: data.rejected || 0,
-      sub: "Applications rejected",
-      icon: "x-circle",
-      color: "red",
-    },
-  ];
-
+const statsData = data.stats || {};
+console.log("DASHBOARD DATA:", data);
+console.log("DASHBOARD STATS:", data?.stats);
+const stats = [
+  {
+    label: "Total Applications",
+    value: statsData.totalApplications || 0,
+    sub: "Applications submitted",
+    icon: "briefcase",
+    color: "indigo",
+  },
+  {
+    label: "Reviewed",
+    value: statsData.reviewed || 0,
+    sub: "Applications reviewed",
+    icon: "check-circle",
+    color: "green",
+  },
+  {
+    label: "Selected",
+    value: statsData.selected || 0,
+    sub: "Applications selected",
+    icon: "clock",
+    color: "yellow",
+  },
+  {
+    label: "Rejected",
+    value: statsData.rejected || 0,
+    sub: "Applications rejected",
+    icon: "x-circle",
+    color: "red",
+  },
+];
   // Format recent applications for the component
   const recentApplications = (data.recentApplications || []).map((app) => ({
     id: app._id,

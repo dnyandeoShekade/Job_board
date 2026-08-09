@@ -22,12 +22,12 @@ export default function AdminSidebar({ isOpen }) {
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Manage Jobs", href: "/admin/manage-jobs", icon: Briefcase },
     { name: "Add Job", href: "/admin/add-job", icon: PlusCircle },
-    { name: "Edit Job", href: "/admin/edit-job", icon: Edit },
-    { name: "Manage Applications", href: "/admin/manage-applications", icon: FileText },
-    { name: "Users", href: "/admin/users", icon: Users },
-    { name: "Categories", href: "/admin/categories", icon: FolderTree },
-    { name: "Reports", href: "/admin/reports", icon: BarChart3 },
-    { name: "Settings", href: "/admin/settings", icon: Settings },
+    // { name: "Edit Job", href: "/admin/edit-job", icon: Edit },
+    // { name: "Manage Applications", href: "/admin/manage-applications", icon: FileText },
+    // { name: "Users", href: "/admin/users", icon: Users },
+    // { name: "Categories", href: "/admin/categories", icon: FolderTree },
+    // { name: "Reports", href: "/admin/reports", icon: BarChart3 },
+    // { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
   return (

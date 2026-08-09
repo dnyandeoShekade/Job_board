@@ -27,3 +27,20 @@ export const loginUser = async (userData) => {
 
   return await response.json();
 };
+
+
+export async function getCurrentUser() {
+  const response = await fetch(`${BASE_URL}/auth/me`, {
+    method: "GET",
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const result = await response.json();
+
+  return result.success ? result.user : null;
+}

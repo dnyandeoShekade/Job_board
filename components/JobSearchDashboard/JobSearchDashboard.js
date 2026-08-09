@@ -20,6 +20,15 @@ export default function JobSearchDashboard({ jobs, hero }) {
   const [activePage, setActivePage] = useState(1);
   const [savedJobs, setSavedJobs] = useState([]);
 
+  // Debug: Log the first job to see its structure
+  React.useEffect(() => {
+    if (jobs && jobs.length > 0) {
+      console.log("First job data:", jobs[0]);
+      console.log("Logo field:", jobs[0].logo);
+      console.log("All job keys:", Object.keys(jobs[0]));
+    }
+  }, [jobs]);
+
   // Interactive Filter States
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
@@ -389,8 +398,20 @@ export default function JobSearchDashboard({ jobs, hero }) {
                 >
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1">
-                      <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-lg font-bold text-slate-700 shrink-0">
-                        {job.company?.charAt(0) || "J"}
+                      <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-lg font-bold text-slate-700 shrink-0 overflow-hidden">
+                        {(job.logo || job.companyLogo || job.logoUrl) ? (
+                          <img 
+                            src={job.logo || job.companyLogo || job.logoUrl} 
+                            alt={`${job.company} logo`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.parentElement.innerHTML = `<span>${job.company?.charAt(0) || "J"}</span>`;
+                            }}
+                          />
+                        ) : (
+                          <span>{job.company?.charAt(0) || "J"}</span>
+                        )}
                       </div>
                       <div>
                         <h2 className="font-bold text-slate-900 text-base hover:text-blue-600 transition">

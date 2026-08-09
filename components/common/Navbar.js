@@ -5,27 +5,36 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Menu, X, User, LogOut } from "lucide-react";
 import { logoutUser } from "@/services/logoutService";
+import { getCurrentUser } from "@/services/authService";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const router = useRouter();
 
-  useEffect(() => {
-    // Check authentication status
-    const checkAuth = () => {
-      const userData = localStorage.getItem("user");
-      
-      if (userData) {
-        setIsAuthenticated(true);
-        setUser(JSON.parse(userData));
-      } else {
+useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+
+        if (currentUser) {
+          setIsAuthenticated(true);
+          setUser(currentUser);
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("AUTH CHECK ERROR:", error);
         setIsAuthenticated(false);
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
-
     // Check on mount
     checkAuth();
 
@@ -41,33 +50,50 @@ export default function Header() {
     };
   }, []);
 
+  // const handleLogout = async () => {
+  //   try {
+  //     // Call backend to clear HTTP-only cookie
+  //     await logoutUser();
+      
+  //     // Remove user data from localStorage
+  //     localStorage.removeItem("user");
+      
+  //     // Update UI state
+  //     setIsAuthenticated(false);
+  //     setUser(null);
+  //     setIsOpen(false);
+      
+  //     // Trigger auth change event
+  //     window.dispatchEvent(new Event("authChange"));
+      
+  //     router.push("/");
+  //   } catch (error) {
+  //     console.error("Logout failed:", error);
+  //     // Still clear local data even if backend call fails
+  //     localStorage.removeItem("user");
+  //     setIsAuthenticated(false);
+  //     setUser(null);
+  //     setIsOpen(false);
+  //     router.push("/");
+  //   }
+  // };
   const handleLogout = async () => {
     try {
-      // Call backend to clear HTTP-only cookie
       await logoutUser();
-      
-      // Remove user data from localStorage
-      localStorage.removeItem("user");
-      
-      // Update UI state
-      setIsAuthenticated(false);
-      setUser(null);
-      setIsOpen(false);
-      
-      // Trigger auth change event
-      window.dispatchEvent(new Event("authChange"));
-      
-      router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
-      // Still clear local data even if backend call fails
-      localStorage.removeItem("user");
+    } finally {
       setIsAuthenticated(false);
       setUser(null);
       setIsOpen(false);
+
+      window.dispatchEvent(new Event("authChange"));
+
       router.push("/");
     }
   };
+
+    const isAdmin = user?.role === "admin";
 
   return (
     <header className="w-full bg-[#F2F5FF] border-b border-gray-200 sticky top-0 z-50">
@@ -106,23 +132,34 @@ export default function Header() {
                 Jobs
               </Link>
             </li>
-            <li>
-              <Link
-                href="/dashboard"
-                className="hover:text-indigo-600 transition"
-              >
-                dashboard
-              </Link>
-            </li>
-           
-           
-           
+           {isAuthenticated && (
+              <li>
+                <Link
+                  href="/dashboard"
+                  className="hover:text-indigo-600 transition"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
+              {/* ONLY ADMIN */}
+            {isAdmin && (
+              <li>
+                <Link
+                  href="/admin"
+                  className="hover:text-indigo-600 transition"
+                >
+                  Admin
+                </Link>
+              </li>
+            )}
+
           </ul>
         </nav>
 
         {/* Desktop Buttons */}
         <div className="hidden lg:flex items-center gap-3">
-          {isAuthenticated ? (
+          {!loading && isAuthenticated ? (
             <>
               <Link
                 href="/dashboard"
@@ -139,7 +176,7 @@ export default function Header() {
                 Logout
               </button>
             </>
-          ) : (
+          ) : !loading ? (
             <>
               <Link
                 href="/auth/login"
@@ -155,15 +192,19 @@ export default function Header() {
                 Sign Up
               </Link>
             </>
-          )}
+          ) : null}
         </div>
 
         {/* Mobile Menu Button */}
-        <button
+         <button
           className="lg:hidden p-2 rounded-md hover:bg-gray-200 transition"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 
@@ -183,17 +224,26 @@ export default function Header() {
               Jobs
             </Link>
 
-            <Link href="/companies" onClick={() => setIsOpen(false)}>
-              Companies
-            </Link>
+         
+            {isAuthenticated && (
+              <Link
+                href="/dashboard"
+                onClick={() => setIsOpen(false)}
+              >
+                Dashboard
+              </Link>
+            )}
 
-            <Link href="/about" onClick={() => setIsOpen(false)}>
-              About
-            </Link>
 
-            <Link href="/contact" onClick={() => setIsOpen(false)}>
-              Contact
-            </Link>
+            {/* ONLY ADMIN */}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                onClick={() => setIsOpen(false)}
+              >
+                Admin
+              </Link>
+            )}
           </nav>
 
           <div className="flex flex-col gap-3 mt-6">

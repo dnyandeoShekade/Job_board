@@ -1,5 +1,5 @@
-import { getManageJobsData } from "../../actions/jobActions";
 import ManageJobsPage from "../../../components/Admin/ManageJobsPage";
+import { getManageJobsData } from "../../actions/jobActions";
 
 export default async function ManageJobs() {
   const response = await getManageJobsData();
