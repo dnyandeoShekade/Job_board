@@ -18,41 +18,19 @@ export default function Header() {
 useEffect(() => {
     const checkAuth = async () => {
       try {
-        // First check localStorage for immediate UI update
-        const localUser = localStorage.getItem("user");
-        if (localUser) {
-          const userData = JSON.parse(localUser);
-          setIsAuthenticated(true);
-          setUser(userData);
-          setLoading(false);
-        }
-
-        // Then verify with backend
         const currentUser = await getCurrentUser();
 
         if (currentUser) {
           setIsAuthenticated(true);
           setUser(currentUser);
-          // Update localStorage with fresh data
-          localStorage.setItem("user", JSON.stringify(currentUser));
         } else {
-          // Backend says not authenticated, clear everything
           setIsAuthenticated(false);
           setUser(null);
-          localStorage.removeItem("user");
         }
       } catch (error) {
         console.error("AUTH CHECK ERROR:", error);
-        // If backend fails but localStorage has user, keep them logged in
-        const localUser = localStorage.getItem("user");
-        if (localUser) {
-          const userData = JSON.parse(localUser);
-          setIsAuthenticated(true);
-          setUser(userData);
-        } else {
-          setIsAuthenticated(false);
-          setUser(null);
-        }
+        setIsAuthenticated(false);
+        setUser(null);
       } finally {
         setLoading(false);
       }
