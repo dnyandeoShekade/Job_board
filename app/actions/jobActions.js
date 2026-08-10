@@ -133,7 +133,7 @@ export async function getCategoriesData() {
 
 export async function getManageApplicationsData() {
   try {
-    const response = await fetch("https://job-board-kup0.onrender.com/api/applications", {
+    const response = await fetch("http://localhost:5000/api/applications", {
       method: "GET",
       credentials: "include",
       cache: "no-store",
@@ -175,7 +175,7 @@ export async function getManageApplicationsData() {
 
 export async function getUsersData() {
   try {
-    const response = await fetch("https://job-board-kup0.onrender.com/api/users", {
+    const response = await fetch("http://localhost:5000/api/users", {
       method: "GET",
       credentials: "include",
       cache: "no-store",

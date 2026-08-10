@@ -15,19 +15,36 @@ export const registerUser = async (userData) => {
   return data;
 };
 
-export const loginUser = async (userData) => {
-  const response = await fetch(`${BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(userData),
-  });
+export async function loginUser(credentials) {
+  try {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(credentials),
+    });
 
-  return await response.json();
-};
+    const data = await response.json();
 
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Login failed",
+      };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("LOGIN API ERROR:", error);
+
+    return {
+      success: false,
+      message: "Unable to connect to server",
+    };
+  }
+}
 
 export async function getCurrentUser() {
   const response = await fetch(`${BASE_URL}/auth/me`, {
