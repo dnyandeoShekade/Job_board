@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { registerUser } from "@/services/authService";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Mail,
@@ -9,21 +10,23 @@ import {
   User,
   Eye,
   EyeOff,
-  ArrowRight,
   CheckCircle2,
 } from "lucide-react";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("Candidate");
+  const [error, setError] = useState("");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
     setLoading(true);
 
     try {
@@ -31,22 +34,26 @@ export default function SignupPage() {
         name,
         email,
         password,
+        role,
       });
 
-      console.log(result);
+      console.log("Registration result:", result);
 
       if (result.success) {
-        alert("Registration Successful!");
+        // Save User data to localStorage
+        localStorage.setItem("user", JSON.stringify(result.user));
 
-        setName("");
-        setEmail("");
-        setPassword("");
+        // Trigger auth change event to update navbar
+        window.dispatchEvent(new Event("authChange"));
+
+        // Redirect to dashboard
+        router.push("/dashboard");
       } else {
-        alert(result.message);
+        setError(result.message || "Registration failed. Please try again.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong");
+      console.error("Registration error:", error);
+      setError("Unable to connect to server. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -111,6 +118,12 @@ export default function SignupPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-xs sm:text-sm">
+                {error}
+              </div>
+            )}
             {" "}
             {/* User Role Selector (Interactive Pills matching reference style) */}
             <div>
