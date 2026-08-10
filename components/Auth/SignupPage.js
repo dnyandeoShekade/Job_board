@@ -16,6 +16,7 @@ import {
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("Candidate");
+  const [error, setError] = useState("");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export default function SignupPage() {
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
     setLoading(true);
 
     try {
@@ -32,6 +33,7 @@ export default function SignupPage() {
         name,
         email,
         password,
+        role,
       });
 
       console.log(result);
@@ -43,15 +45,13 @@ export default function SignupPage() {
         // Trigger auth change event to update navbar
         window.dispatchEvent(new Event("authChange"));
 
-        alert("Registration Successful!");
-
         router.push("/dashboard");
       } else {
-        alert(result.message);
+        setError(result.message || "Registration failed");
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -116,6 +116,12 @@ export default function SignupPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-xs sm:text-sm">
+                {error}
+              </div>
+            )}
             {" "}
             {/* User Role Selector (Interactive Pills matching reference style) */}
             <div>
