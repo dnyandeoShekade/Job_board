@@ -1,21 +1,14 @@
-import { cookies } from "next/headers";
 import BASE_URL from "@/utils/api";
 
 export async function getDashboard() {
-  const cookieStore = await cookies();
-
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ");
-
+  // Since this is server-side, we can't access localStorage
+  // The token should be passed from the client component
   console.log("Dashboard URL:", `${BASE_URL}/dashboard/user`);
-  console.log("Cookie exists:", cookieHeader ? "Yes" : "No");
 
   const response = await fetch(`${BASE_URL}/dashboard/user`, {
     method: "GET",
     headers: {
-      Cookie: cookieHeader,
+      "Content-Type": "application/json",
     },
     cache: "no-store",
   });

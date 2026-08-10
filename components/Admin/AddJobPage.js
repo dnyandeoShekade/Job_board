@@ -53,9 +53,15 @@ const [logo, setLogo] = useState(null);
         formDataToSend.append("companyLogo", logo);
       }
 
-      const response = await fetch("https://job-board-kup0.onrender.com/api/jobs", {
+      const token = localStorage.getItem('token');
+      const headers = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${BASE_URL}/jobs`, {
         method: "POST",
-        credentials: "include",
+        headers: headers,
         body: formDataToSend,
       });
 

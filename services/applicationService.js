@@ -1,6 +1,16 @@
 import BASE_URL from "@/utils/api";
 
+// Helper to get auth token
+const getAuthToken = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('token');
+  }
+  return null;
+};
+
 export const submitApplication = async (applicationData) => {
+  const token = getAuthToken();
+  
   const formData = new FormData();
   formData.append("fullName", applicationData.fullName);
   formData.append("email", applicationData.email);
@@ -12,9 +22,14 @@ export const submitApplication = async (applicationData) => {
     formData.append("resume", applicationData.resumeFile);
   }
 
+  const headers = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${BASE_URL}/applications/submit`, {
     method: "POST",
-    credentials: "include",
+    headers: headers,
     body: formData,
   });
 
@@ -27,9 +42,16 @@ export const submitApplication = async (applicationData) => {
 };
 
 export async function getUserApplications() {
+  const token = getAuthToken();
+  
+  const headers = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${BASE_URL}/applications/me`, {
     method: "GET",
-    credentials: "include",
+    headers: headers,
   });
 
   if (!response.ok) {
@@ -39,6 +61,7 @@ export async function getUserApplications() {
 
   return await response.json();
 }
+
 export const formatApplication = (application) => {
   const job = application.jobId;
 

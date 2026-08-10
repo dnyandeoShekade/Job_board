@@ -134,9 +134,16 @@ export async function getCategoriesData() {
 export async function getManageApplicationsData() {
   try {
     const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    
+    const headers = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${BASE_URL}/applications`, {
       method: "GET",
-      credentials: "include",
+      headers: headers,
       cache: "no-store",
     });
 
@@ -177,9 +184,16 @@ export async function getManageApplicationsData() {
 export async function getUsersData() {
   try {
     const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    
+    const headers = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${BASE_URL}/users`, {
       method: "GET",
-      credentials: "include",
+      headers: headers,
       cache: "no-store",
     });
 

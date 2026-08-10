@@ -1,5 +1,25 @@
 import BASE_URL from "@/utils/api";
 
+// Helper to get auth token
+const getAuthToken = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('token');
+  }
+  return null;
+};
+
+// Helper to get auth headers
+const getAuthHeaders = () => {
+  const token = getAuthToken();
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  return headers;
+};
+
 export const registerUser = async (userData) => {
   try {
     console.log("Attempting to register with URL:", `${BASE_URL}/auth/register`);
@@ -10,7 +30,6 @@ export const registerUser = async (userData) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
       body: JSON.stringify(userData),
     });
 
@@ -28,6 +47,12 @@ export const registerUser = async (userData) => {
     }
 
     const data = await response.json();
+    
+    // Store token if provided
+    if (data.success && data.token) {
+      localStorage.setItem('token', data.token);
+    }
+    
     return data;
   } catch (error) {
     console.error("Network error during registration:", error);
@@ -47,7 +72,6 @@ export const loginUser = async (userData) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
       body: JSON.stringify(userData),
     });
 
@@ -61,7 +85,14 @@ export const loginUser = async (userData) => {
       };
     }
 
-    return await response.json();
+    const data = await response.json();
+    
+    // Store token if provided
+    if (data.success && data.token) {
+      localStorage.setItem('token', data.token);
+    }
+    
+    return data;
   } catch (error) {
     console.error("Network error during login:", error);
     return {
@@ -73,13 +104,26 @@ export const loginUser = async (userData) => {
 
 export async function getCurrentUser() {
   try {
+    const token = getAuthToken();
+    
+    if (!token) {
+      return null;
+    }
+
     const response = await fetch(`${BASE_URL}/auth/me`, {
       method: "GET",
-      credentials: "include",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
       cache: "no-store",
     });
 
     if (!response.ok) {
+      // Token invalid or expired
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
       return null;
     }
 

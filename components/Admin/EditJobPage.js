@@ -58,12 +58,18 @@ export default function EditJobPage({ jobSlug, initialJob }) {
       setLoading(true);
       setMessage("");
 
+      const token = localStorage.getItem('token');
+      const headers = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${BASE_URL}/jobs/${jobSlug}`, {
         method: "PUT",
         headers: {
+          ...headers,
           "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify(formData),
       });
 

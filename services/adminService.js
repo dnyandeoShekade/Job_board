@@ -1,18 +1,12 @@
-import { cookies } from "next/headers";
 import BASE_URL from "@/utils/api";
 
 export async function getAdminDashboard() {
-  const cookieStore = await cookies();
-
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ");
-
+  // Since this is server-side, we can't access localStorage
+  // The token should be passed from the client component
   const response = await fetch(`${BASE_URL}/dashboard/admin`, {
     method: "GET",
     headers: {
-      Cookie: cookieHeader,
+      "Content-Type": "application/json",
     },
     cache: "no-store",
   });
