@@ -133,7 +133,8 @@ export async function getCategoriesData() {
 
 export async function getManageApplicationsData() {
   try {
-    const response = await fetch("http://localhost:5000/api/applications", {
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const response = await fetch(`${BASE_URL}/applications`, {
       method: "GET",
       credentials: "include",
       cache: "no-store",
@@ -175,7 +176,8 @@ export async function getManageApplicationsData() {
 
 export async function getUsersData() {
   try {
-    const response = await fetch("http://localhost:5000/api/users", {
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const response = await fetch(`${BASE_URL}/users`, {
       method: "GET",
       credentials: "include",
       cache: "no-store",
