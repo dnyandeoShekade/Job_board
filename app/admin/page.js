@@ -1,7 +1,9 @@
-import { getAdminDashboardData } from "../actions/adminActions";
-import AdminDashboard from "../../components/Admin/AdminDashboard";
+import AdminDashboardClient from "../../components/Admin/AdminDashboardClient";
 
-export default async function AdminDashboardPage() {
-  const response = await getAdminDashboardData();
-  return <AdminDashboard data={response.data} />;
+export const metadata = {
+  title: "Admin Dashboard | JobPortal",
+};
+
+export default function AdminDashboardPage() {
+  return <AdminDashboardClient />;
 }
