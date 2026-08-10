@@ -47,7 +47,7 @@ export default function SignupPage() {
         window.dispatchEvent(new Event("authChange"));
 
         // Redirect to dashboard
-        router.push("/dashboard");
+        router.push("/");
       } else {
         setError(result.message || "Registration failed. Please try again.");
       }

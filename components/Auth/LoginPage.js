@@ -32,7 +32,7 @@ export default function LoginPage() {
         // Trigger auth change event to update navbar
         window.dispatchEvent(new Event("authChange"));
 
-        router.push("/dashboard");
+        router.push("/");
       } else {
         alert(result.message);
       }
