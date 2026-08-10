@@ -1,6 +1,5 @@
 const express = require("express"); //Express helps create backend servers and APIs easily.
 const cors = require("cors"); //CORS allows frontend and backend to communicate.
-const cookieParser = require("cookie-parser"); // Parse cookies from requests
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
@@ -31,14 +30,24 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Serve static files from uploads folder
 
 //middleware
+const allowedOrigins = [
+  "http://localhost:3000",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    credentials: true, // Allow cookies to be sent
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
   }),
-); //✅ Enables frontend requests with credentials
+);
+
 app.use(express.json()); //Converts incoming JSON data into JavaScript object.
-app.use(cookieParser()); // Parse cookies from incoming requests
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
 app.use("/api/jobs", jobRoutes);
 app.use("/api/auth", authRoutes);

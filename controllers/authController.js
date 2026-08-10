@@ -34,17 +34,10 @@ const registerUser = async (req, res) => {
     // Generate JWT Token
     const token = generateToken(user._id);
 
-    // Set HTTP-only cookie
-    res.cookie("token", token, {
-      httpOnly: true, // Cannot be accessed by JavaScript
-      secure: process.env.NODE_ENV === "production", // HTTPS only in production
-      sameSite: "lax", // CSRF protection
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (matches JWT expiration)
-    });
-
     res.status(201).json({
       success: true,
       message: "User registered successfully",
+      token,
       user: {
         _id: user._id,
         name: user.name,
@@ -87,17 +80,10 @@ const loginUser = async (req, res) => {
     // Generate Token
     const token = generateToken(user._id);
 
-    // Set HTTP-only cookie
-    res.cookie("token", token, {
-      httpOnly: true, // Cannot be accessed by JavaScript
-      secure: process.env.NODE_ENV === "production", // HTTPS only in production
-      sameSite: "lax", // CSRF protection
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (matches JWT expiration)
-    });
-
     res.status(200).json({
       success: true,
       message: "Login successful",
+      token,
       user: {
         _id: user._id,
         name: user.name,
@@ -117,13 +103,6 @@ const loginUser = async (req, res) => {
 // ================= Logout User =================
 const logoutUser = async (req, res) => {
   try {
-    // Clear the HTTP-only cookie
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    });
-
     res.status(200).json({
       success: true,
       message: "Logout successful",
