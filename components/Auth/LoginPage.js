@@ -32,8 +32,6 @@ export default function LoginPage() {
         // Trigger auth change event to update navbar
         window.dispatchEvent(new Event("authChange"));
 
-        alert("Login Successful!");
-
         router.push("/dashboard");
       } else {
         alert(result.message);

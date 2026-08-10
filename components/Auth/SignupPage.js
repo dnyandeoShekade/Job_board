@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { registerUser } from "@/services/authService";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Mail,
@@ -10,6 +9,7 @@ import {
   User,
   Eye,
   EyeOff,
+  ArrowRight,
   CheckCircle2,
 } from "lucide-react";
 
@@ -21,7 +21,6 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,15 +36,11 @@ export default function SignupPage() {
       console.log(result);
 
       if (result.success) {
-        // Save User data only (JWT is in HTTP-only cookie)
-        localStorage.setItem("user", JSON.stringify(result.user));
-
-        // Trigger auth change event to update navbar
-        window.dispatchEvent(new Event("authChange"));
-
         alert("Registration Successful!");
 
-        router.push("/dashboard");
+        setName("");
+        setEmail("");
+        setPassword("");
       } else {
         alert(result.message);
       }

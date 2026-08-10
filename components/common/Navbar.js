@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Menu, X, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, ChevronDown } from "lucide-react";
 import { logoutUser } from "@/services/logoutService";
 import { getCurrentUser } from "@/services/authService";
 
@@ -12,6 +12,8 @@ export default function Header() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef(null);
 
   const router = useRouter();
 
@@ -50,33 +52,20 @@ useEffect(() => {
     };
   }, []);
 
-  // const handleLogout = async () => {
-  //   try {
-  //     // Call backend to clear HTTP-only cookie
-  //     await logoutUser();
-      
-  //     // Remove user data from localStorage
-  //     localStorage.removeItem("user");
-      
-  //     // Update UI state
-  //     setIsAuthenticated(false);
-  //     setUser(null);
-  //     setIsOpen(false);
-      
-  //     // Trigger auth change event
-  //     window.dispatchEvent(new Event("authChange"));
-      
-  //     router.push("/");
-  //   } catch (error) {
-  //     console.error("Logout failed:", error);
-  //     // Still clear local data even if backend call fails
-  //     localStorage.removeItem("user");
-  //     setIsAuthenticated(false);
-  //     setUser(null);
-  //     setIsOpen(false);
-  //     router.push("/");
-  //   }
-  // };
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -86,6 +75,7 @@ useEffect(() => {
       setIsAuthenticated(false);
       setUser(null);
       setIsOpen(false);
+      setShowUserMenu(false);
 
       window.dispatchEvent(new Event("authChange"));
 
@@ -93,7 +83,18 @@ useEffect(() => {
     }
   };
 
-    const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role === "admin";
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    const name = user?.name || user?.fullName || "U";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <header className="w-full bg-[#F2F5FF] border-b border-gray-200 sticky top-0 z-50">
@@ -160,22 +161,60 @@ useEffect(() => {
         {/* Desktop Buttons */}
         <div className="hidden lg:flex items-center gap-3">
           {!loading && isAuthenticated ? (
-            <>
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
-              >
-                <User className="w-4 h-4" />
-                <span>{user?.name || user?.fullName || "Dashboard"}</span>
-              </Link>
+            <div className="relative" ref={userMenuRef}>
               <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 border border-red-600 rounded-lg hover:bg-red-50 transition"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
               >
-                <LogOut className="w-4 h-4" />
-                Logout
+                <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-semibold text-xs">
+                  {getUserInitials()}
+                </div>
+                <span className="max-w-[120px] truncate">
+                  {user?.name || user?.fullName || "User"}
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform ${
+                    showUserMenu ? "rotate-180" : ""
+                  }`}
+                />
               </button>
-            </>
+
+              {/* Dropdown Menu */}
+              {showUserMenu && (
+                <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                  <div className="px-4 py-3 border-b border-gray-200">
+                    <p className="text-sm font-semibold text-gray-900">
+                      {user?.name || user?.fullName}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {user?.email}
+                    </p>
+                    {user?.role && (
+                      <p className="text-xs text-indigo-600 font-medium mt-1 capitalize">
+                        {user.role}
+                      </p>
+                    )}
+                  </div>
+
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setShowUserMenu(false)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
+                  >
+                    <User className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           ) : !loading ? (
             <>
               <Link
