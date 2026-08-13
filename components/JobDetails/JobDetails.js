@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Bookmark,
   Send,
@@ -55,17 +54,15 @@ export default function JobDetails({ job }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="flex items-start gap-6">
                 <div className="w-30 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center p-3 shrink-0">
-                  {job.logoUrl ? (
-                    <Image
-                      src={job.logoUrl}
+                  {job.companyLogo ? (
+                    <img
+                      src={job.companyLogo}
                       alt={`${job.company} logo`}
-                      width={80}
-                      height={40}
-                      className="object-contain"
+                      className="w-full h-full object-contain"
                     />
                   ) : (
                     <span className="text-2xl font-bold text-slate-700">
-                      {job.logo}
+                      {job.company?.charAt(0)?.toUpperCase()}
                     </span>
                   )}
                 </div>
