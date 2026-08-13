@@ -98,31 +98,25 @@ const getALlJobs = async (req, res) => {
     const keyword = req.query.keyword || "";
     const location = req.query.location || "";
     const category = req.query.category || "";
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 5;
-    const skip = (page - 1) * limit;
 
     const jobs = await Job.find({
       title: { $regex: keyword, $options: "i" },
       location: { $regex: location, $options: "i" },
       category: { $regex: category, $options: "i" },
-    })
-      .skip(skip)
-      .limit(limit);
-
-    const totalJobs = await Job.countDocuments();
+    }).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
       count: jobs.length,
-      totalJobs,
-      page,
+      totalJobs: jobs.length,
       jobs,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "server error", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "server error",
+      error: error.message,
+    });
   }
 };
 
