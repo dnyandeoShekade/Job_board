@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Rocket, ArrowRight, UserPlus } from "lucide-react";
 
@@ -62,25 +63,31 @@ export default function CTA() {
 
             {/* Right Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <motion.a
-                href="#"
+              <motion.div
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#2f6fff] rounded-xl font-bold text-base shadow-[0_10px_25px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.15)] transition-all"
               >
-                Browse Jobs
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </motion.a>
+                <Link
+                  href="/job"
+                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#2f6fff] rounded-xl font-bold text-base shadow-[0_10px_25px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.15)] transition-all"
+                >
+                  Browse Jobs
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
 
-              <motion.a
-                href="#"
+              <motion.div
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-xl font-bold text-base hover:bg-white/20 transition-all shadow-sm"
               >
-                <UserPlus className="w-4 h-4" />
-                Create Account
-              </motion.a>
+                <Link
+                  href="/auth/signup"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-xl font-bold text-base hover:bg-white/20 transition-all shadow-sm"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  Create Account
+                </Link>
+              </motion.div>
             </div>
           </div>
         </motion.div>

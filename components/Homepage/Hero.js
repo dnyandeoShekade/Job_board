@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Search,
   MapPin,
@@ -13,6 +15,27 @@ import {
 import { motion } from "framer-motion";
 
 export default function Hero() {
+  const router = useRouter();
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    
+    // Build query parameters
+    const params = new URLSearchParams();
+    if (searchKeyword.trim()) {
+      params.append('keyword', searchKeyword.trim());
+    }
+    if (searchLocation.trim()) {
+      params.append('location', searchLocation.trim());
+    }
+    
+    // Navigate to job page with search params
+    const queryString = params.toString();
+    router.push(`/job${queryString ? `?${queryString}` : ''}`);
+  };
+
   // Animation variants for floating elements
   const floatAnimation = (delay) => ({
     animate: {
@@ -76,13 +99,15 @@ export default function Hero() {
             </p>
 
             {/* Main Search Bar Container */}
-            <div className="mt-10 flex w-full max-w-[600px] flex-col gap-3 rounded-full bg-white p-2.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.08)] sm:flex-row sm:items-center">
+            <form onSubmit={handleSearch} className="mt-10 flex w-full max-w-[600px] flex-col gap-3 rounded-full bg-white p-2.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.08)] sm:flex-row sm:items-center">
               <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
                 {/* Job Title Input */}
                 <div className="flex flex-1 items-center gap-3 px-4 py-2 sm:py-0">
                   <Search className="h-5 w-5 text-gray-400 shrink-0" />
                   <input
                     type="text"
+                    value={searchKeyword}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
                     className="w-full bg-transparent text-[15px] font-medium text-gray-900 outline-none placeholder:text-gray-400"
                     placeholder="Job title or keyword"
                   />
@@ -96,6 +121,8 @@ export default function Hero() {
                   <MapPin className="h-5 w-5 text-gray-400 shrink-0" />
                   <input
                     type="text"
+                    value={searchLocation}
+                    onChange={(e) => setSearchLocation(e.target.value)}
                     className="w-full bg-transparent text-[15px] font-medium text-gray-900 outline-none placeholder:text-gray-400"
                     placeholder="Location"
                   />
@@ -103,20 +130,20 @@ export default function Hero() {
               </div>
 
               {/* Inside Search Action Button */}
-              <button className="rounded-full bg-[#3b5bdb] px-8 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#2f4ac4] hover:shadow-lg active:scale-[0.98]">
+              <button type="submit" className="rounded-full bg-[#3b5bdb] px-8 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#2f4ac4] hover:shadow-lg active:scale-[0.98]">
                 Search Jobs
               </button>
-            </div>
+            </form>
 
             {/* Secondary CTA Quick Actions */}
             <div className="mt-10 flex items-center gap-5">
-              <button className="group flex items-center gap-2 rounded-xl bg-[#3b5bdb] px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#2f4ac4] hover:shadow-md active:scale-[0.98]">
+              <Link href="/job" className="group flex items-center gap-2 rounded-xl bg-[#3b5bdb] px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#2f4ac4] hover:shadow-md active:scale-[0.98]">
                 Find Jobs
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
-              <button className="rounded-xl border border-[#3b5bdb]/30 bg-transparent px-7 py-3.5 text-[15px] font-semibold text-[#3b5bdb] transition-all hover:bg-[#3b5bdb]/5 active:scale-[0.98]">
+              </Link>
+              <Link href="/admin/add-job" className="rounded-xl border border-[#3b5bdb]/30 bg-transparent px-7 py-3.5 text-[15px] font-semibold text-[#3b5bdb] transition-all hover:bg-[#3b5bdb]/5 active:scale-[0.98]">
                 Post a Job
-              </button>
+              </Link>
             </div>
           </motion.div>
 

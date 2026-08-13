@@ -116,6 +116,7 @@ export async function deleteJob(slug) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     cache: "no-store",
   });
 

@@ -45,7 +45,7 @@ export default function StatsGrid({ stats }) {
         return (
           <div
             key={stat.label}
-            className="rounded-2xl border border-slate-200 bg-white p-5"
+            className="rounded2xl border border-slate-200 bg-white p-5"
           >
             <div
               className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}

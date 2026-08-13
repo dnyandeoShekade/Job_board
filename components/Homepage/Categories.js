@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Code,
@@ -69,6 +70,12 @@ const categories = [
 ];
 
 export default function Categories() {
+  const router = useRouter();
+
+  const handleCategoryClick = (categoryName) => {
+    router.push(`/job?category=${encodeURIComponent(categoryName)}`);
+  };
+
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -102,6 +109,7 @@ export default function Categories() {
                   y: -8,
                   transition: { duration: 0.3 },
                 }}
+                onClick={() => handleCategoryClick(category.name)}
                 className="cursor-pointer"
               >
                 <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center">

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
-
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Search,
@@ -17,17 +17,9 @@ import {
 } from "lucide-react";
 
 export default function JobSearchDashboard({ jobs, hero }) {
+  const searchParams = useSearchParams();
   const [activePage, setActivePage] = useState(1);
   const [savedJobs, setSavedJobs] = useState([]);
-
-  // Debug: Log the first job to see its structure
-  React.useEffect(() => {
-    if (jobs && jobs.length > 0) {
-      console.log("First job data:", jobs[0]);
-      console.log("Logo field:", jobs[0].logo);
-      console.log("All job keys:", Object.keys(jobs[0]));
-    }
-  }, [jobs]);
 
   // Interactive Filter States
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -43,6 +35,36 @@ export default function JobSearchDashboard({ jobs, hero }) {
   const [sortBy, setSortBy] = useState("Newest First");
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+
+  // Handle URL query parameters for category filtering
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    const keywordParam = searchParams.get('keyword');
+    const locationParam = searchParams.get('location');
+    
+    if (categoryParam) {
+      // Map full category names to filter names
+      const categoryMap = {
+        "Frontend Development": "Frontend",
+        "Backend Development": "Backend",
+        "Full Stack Development": "Full Stack",
+        "DevOps": "DevOps",
+        "UI/UX Design": "UI/UX",
+        "Data Science": "Data Science",
+      };
+      
+      const filterCategory = categoryMap[categoryParam] || categoryParam;
+      setSelectedCategories({ [filterCategory]: true });
+    }
+    
+    if (keywordParam) {
+      setSearchKeyword(keywordParam);
+    }
+    
+    if (locationParam) {
+      setSearchLocation(locationParam);
+    }
+  }, [searchParams]);
 
   const toggleBookmark = (id) => {
     setSavedJobs((prev) =>

@@ -9,12 +9,14 @@ import {
   FileText,
   ArrowRight,
   Tag,
+  Clock,
+  Layers,
 } from "lucide-react";
-
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function AddJobPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-const [logo, setLogo] = useState(null);
+  // const [logo, setLogo] = useState(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -22,6 +24,9 @@ const [logo, setLogo] = useState(null);
     location: "",
     salary: "",
     category: "",
+    experience: "",
+    jobType: "",
+    companyLogo: "",
     description: "",
   });
 
@@ -41,37 +46,18 @@ const [logo, setLogo] = useState(null);
       setLoading(true);
       setMessage("");
 
-      const formDataToSend = new FormData();
-      formDataToSend.append("title", formData.title);
-      formDataToSend.append("company", formData.company);
-      formDataToSend.append("location", formData.location);
-      formDataToSend.append("salary", formData.salary);
-      formDataToSend.append("category", formData.category);
-      formDataToSend.append("description", formData.description);
-      
-      if (logo) {
-        formDataToSend.append("companyLogo", logo);
-      }
-
-      const token = localStorage.getItem('token');
-      const headers = {};
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
+      const token = localStorage.getItem("token");
 
       const response = await fetch(`${BASE_URL}/jobs`, {
         method: "POST",
-        headers: headers,
-        body: formDataToSend,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
       });
 
-      let result;
-      try {
-        result = await response.json();
-      } catch (jsonError) {
-        setMessage("Backend API error. Make sure the server is running at https://job-board-kup0.onrender.com/");
-        return;
-      }
+      const result = await response.json();
 
       if (!response.ok) {
         setMessage(result.message || "Failed to create job");
@@ -86,9 +72,9 @@ const [logo, setLogo] = useState(null);
         location: "",
         salary: "",
         category: "",
+        companyLogo: "",
         description: "",
       });
-      setLogo(null);
     } catch (error) {
       setMessage(error.message || "Failed to create job");
     } finally {
@@ -111,9 +97,7 @@ const [logo, setLogo] = useState(null);
         {message && (
           <div
             className={`mb-3 text-sm font-medium ${
-              message.includes("success")
-                ? "text-green-600"
-                : "text-red-600"
+              message.includes("success") ? "text-green-600" : "text-red-600"
             }`}
           >
             {message}
@@ -159,6 +143,46 @@ const [logo, setLogo] = useState(null);
             </div>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {/* Experience */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-slate-400" />
+                Experience
+              </label>
+              <input
+                type="text"
+                name="experience"
+                value={formData.experience}
+                onChange={handleChange}
+                placeholder="e.g. 2-4 years"
+                className="w-full text-xs sm:text-sm text-slate-800 bg-slate-50/70 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+                required
+              />
+            </div>
+
+            {/* Job Type */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-slate-400" />
+                Job Type
+              </label>
+              <select
+                name="jobType"
+                value={formData.jobType}
+                onChange={handleChange}
+                className="w-full text-xs sm:text-sm text-slate-800 bg-slate-50/70 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+                required
+              >
+                <option value="">Select job type</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Internship">Internship</option>
+                <option value="Contract">Contract</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </div>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             {/* Location */}
             <div>
@@ -218,15 +242,21 @@ const [logo, setLogo] = useState(null);
           {/* Company Logo */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Company Logo
+              Company Logo URL
             </label>
+
             <input
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(e) => setLogo(e.target.files[0])}
-              className="w-full text-xs sm:text-sm text-slate-600 bg-slate-50/70 border border-slate-200 rounded-lg px-3 py-2"
+              type="url"
+              name="companyLogo"
+              value={formData.companyLogo}
+              onChange={handleChange}
+              placeholder="https://example.com/logo.png"
+              className="w-full text-xs sm:text-sm text-slate-800 bg-slate-50/70 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
             />
-            <p className="text-[11px] text-slate-400 mt-1">PNG, JPG or WebP</p>
+
+            <p className="text-[11px] text-slate-400 mt-1">
+              Paste the company logo image URL
+            </p>
           </div>
 
           {/* Description */}

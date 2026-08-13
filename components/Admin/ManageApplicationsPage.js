@@ -2,7 +2,7 @@
 
 import { FileText, CheckCircle2, XCircle, Mail, Briefcase, User } from "lucide-react";
 
-export default function ManageApplicationsPage({ applications }) {
+export default function anageApplicationsPage({ applications }) {
   if (!applications) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center">

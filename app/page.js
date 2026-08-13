@@ -14,7 +14,7 @@ export default function Home() {
       <Trusted />
       <Categories />
       <FeaturedJobs />
-      <WhyChoose />
+      {/* <WhyChoose /> */}
       <Stats />
       <Testimonials />
       <CTA />
