@@ -21,6 +21,10 @@ const JobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  companyLogo: {
+    type: String,
+    default: "",
+  },
   location: {
     type: String,
     required: true,
@@ -28,6 +32,15 @@ const JobSchema = new mongoose.Schema({
   salary: {
     type: String,
     required: true,
+  },
+  experience: {
+    type: String,
+    required: false,
+  },
+  jobType: {
+    type: String,
+    required: false,
+    enum: ["Full Time", "Part Time", "Internship", "Contract", "Remote"],
   },
   description: {
     type: String,

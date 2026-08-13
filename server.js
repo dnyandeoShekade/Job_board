@@ -48,7 +48,7 @@ app.use(
 );
 
 app.use(express.json()); //Converts incoming JSON data into JavaScript object.
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
+// app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
 app.use("/api/jobs", jobRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);

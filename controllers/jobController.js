@@ -29,16 +29,28 @@ const User = require("../models/User");
 
 const createJob = async (req, res) => {
   try {
-    const { title, company, location, salary, category, description } =
-      req.body;
+    const {
+      title,
+      company,
+      location,
+      salary,
+      category,
+      description,
+      companyLogo,
+      experience,
+      jobType,
+    } = req.body;
 
     if (
-      !title ||
-      !company ||
-      !location ||
-      !salary ||
-      !category ||
-      !description
+      (!title,
+      !company,
+      !location,
+      !salary,
+      !category,
+      !description,
+      !companyLogo,
+      !experience,
+      !jobType)
     ) {
       return res.status(400).json({
         success: false,
@@ -50,9 +62,9 @@ const createJob = async (req, res) => {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
-    const companyLogo = req.file
-      ? `/uploads/company-logos/${req.file.filename}`
-      : "";
+    // const companyLogo = req.file
+    //   ? `/uploads/company-logos/${req.file.filename}`
+    //   : "";
     const job = await Job.create({
       title,
       slug,
@@ -60,8 +72,10 @@ const createJob = async (req, res) => {
       location,
       salary,
       category,
+      experience,
+      jobType,
       description,
-      companyLogo,
+      companyLogo: companyLogo || "",
     });
 
     return res.status(201).json({
