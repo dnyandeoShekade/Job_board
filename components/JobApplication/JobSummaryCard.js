@@ -198,56 +198,6 @@ export default function JobSummaryCard({ job }) {
         <p className="text-sm text-slate-600 leading-relaxed mb-6">
           {job.description}
         </p>
-
-        {/* Responsibilities */}
-        <div className="mb-6">
-          <h4 className="font-semibold text-slate-900 text-sm mb-2">
-            Responsibilities
-          </h4>
-
-          {job.jobOverview?.responsibilities?.length ? (
-            <ul className="space-y-1.5">
-              {job.jobOverview.responsibilities.map((item, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-start gap-2 text-xs text-slate-600"
-                >
-                  <span className="text-indigo-600 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-xs text-slate-500">
-              Responsibilities will be available soon.
-            </p>
-          )}
-        </div>
-
-        {/* Requirements */}
-        <div>
-          <h4 className="font-semibold text-slate-900 text-sm mb-2">
-            Requirements
-          </h4>
-
-          {job.jobOverview?.requirements?.length ? (
-            <ul className="space-y-1.5">
-              {job.jobOverview.requirements.map((item, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-start gap-2 text-xs text-slate-600"
-                >
-                  <span className="text-indigo-600 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-xs text-slate-500">
-              Requirements will be available soon.
-            </p>
-          )}
-        </div>
       </div>
     </div>
   );

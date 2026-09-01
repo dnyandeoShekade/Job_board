@@ -160,7 +160,7 @@ export default function JobDetails({ job }) {
                   <span>Job Type</span>
                 </div>
                 <div className="font-semibold text-slate-900 text-sm sm:text-base">
-                  {job.type}
+                  {job.jobType}{" "}
                 </div>
               </div>
             </div>

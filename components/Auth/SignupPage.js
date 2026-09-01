@@ -4,14 +4,7 @@ import { useState } from "react";
 import { registerUser } from "@/services/authService";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  Mail,
-  Lock,
-  User,
-  Eye,
-  EyeOff,
-  CheckCircle2,
-} from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,9 +17,41 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters";
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter";
+    }
+
+    if (!/[a-z]/.test(password)) {
+      return "Password must contain at least one lowercase letter";
+    }
+
+    if (!/[0-9]/.test(password)) {
+      return "Password must contain at least one number";
+    }
+
+    if (!/[!@#$%^&*]/.test(password)) {
+      return "Password must contain at least one special character";
+    }
+
+    return "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    const passwordError = validatePassword(password);
+
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -123,8 +148,7 @@ export default function SignupPage() {
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-xs sm:text-sm">
                 {error}
               </div>
-            )}
-            {" "}
+            )}{" "}
             {/* User Role Selector (Interactive Pills matching reference style) */}
             <div>
               <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
@@ -201,6 +225,7 @@ export default function SignupPage() {
                   className="w-full text-xs sm:text-sm pl-11 pr-11 py-2.5 border border-slate-200 rounded-lg bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition text-slate-800 font-medium"
                   placeholder="••••••••"
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -213,6 +238,10 @@ export default function SignupPage() {
                   )}
                 </button>
               </div>
+              <p className="mt-2 text-[11px] text-slate-500">
+                Password must be at least 8 characters and include uppercase,
+                lowercase, number, and special character.
+              </p>
             </div>
             {/* Sign Up Button */}
             <button
