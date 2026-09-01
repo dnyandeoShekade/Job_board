@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
-
+const bcrypt = require("bcrypt");
+// Register, login, logout, user authentication.
 // Verify the import
 if (typeof generateToken !== "function") {
   console.error("ERROR: generateToken is not a function!");
@@ -24,11 +25,13 @@ const registerUser = async (req, res) => {
     }
 
     // Create user - explicitly set role to 'user' to prevent role injection
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await User.create({
       name,
       email,
-      password,
-      role: "user", // Force role to be user, ignore any role sent in request
+      password: hashedPassword,
+      role: "user",
     });
 
     // Generate JWT Token
@@ -70,13 +73,23 @@ const loginUser = async (req, res) => {
     }
 
     // Check password
-    if (user.password !== password) {
+    // if (user.password !== password) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "Invalid password",
+    //   });
+    // }
+    const isPasswordMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isPasswordMatch) {
       return res.status(401).json({
         success: false,
         message: "Invalid password",
       });
     }
-
     // Generate Token
     const token = generateToken(user._id);
 
@@ -182,17 +195,24 @@ const changePassword = async (req, res) => {
         message: "User not found",
       });
     }
-    console.log("Database Password:", user.password);
-    console.log("Current Password:", currentPassword);
+    // console.log("Database Password:", user.password);
+    // console.log("Current Password:", currentPassword);
 
-    if (user.password !== currentPassword) {
+    const isCurrentPasswordMatch = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isCurrentPasswordMatch) {
       return res.status(401).json({
         success: false,
         message: "Current password is incorrect",
       });
     }
 
-    user.password = newPassword;
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedNewPassword;
 
     await user.save();
 

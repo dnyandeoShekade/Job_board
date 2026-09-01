@@ -1,32 +1,7 @@
 const Job = require("../models/Job");
 const slugify = require("slugify");
 const User = require("../models/User");
-
-// Add new job
-// const createJob = async (req, res) => {
-//   try {
-//     const { title, company, location, salary, description, category } = req.body;
-
-//     const job = await Job.create({
-//       title,
-//       slug: slugify(title, { lower: true, strict: true }),
-//       company,
-//       location,
-//       salary,
-//       description,
-//       category,
-//     });
-
-//     res.status(201).json({
-//       success: true,
-//       message: "job created successfully",
-//       job,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: "Server error", error: error.message });
-//   }
-// };
-
+// Create, get, update, delete jobs.
 const createJob = async (req, res) => {
   try {
     const {

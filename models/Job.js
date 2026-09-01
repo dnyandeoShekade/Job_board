@@ -6,7 +6,7 @@
 // category
 
 const mongoose = require("mongoose");
-
+// Job.js → Defines job data such as title, company, salary, location.
 const JobSchema = new mongoose.Schema({
   title: {
     type: String,

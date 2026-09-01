@@ -2,6 +2,7 @@ const Application = require("../models/Application");
 const Job = require("../models/Job");
 
 // Then rest of your code...
+// Apply for jobs and manage applications.
 
 const applyJob = async (req, res) => {
   try {
@@ -57,30 +58,7 @@ const getAllApplications = async (req, res) => {
     });
   }
 };
-// Show all jobs that a specific user has applied for.
-// const getUserApplications = async (req, res) => {
-//   try {
-//     // get user ID from URL
-//     const userId = req.params.userId;
 
-//     // find applications Give me all applications where userId = 123
-//     const applications = await Application.find({
-//       userId,
-//     }).populate("jobId"); //Get Job Details
-//     // send response
-//     res.status(200).json({
-//       success: true,
-//       count: applications.length,
-//       applications,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Server error ",
-//       error: error.message,
-//     });
-//   }
-// };
 const getUserApplications = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -130,57 +108,8 @@ const updateApplicationStatus = async (req, res) => {
     });
   }
 };
-
-// Submit Job Application
-// const submitApplication = async (req, res) => {
-//   try {
-//     const { fullName, email, phone, coverLetter, resume, jobId } = req.body;
-
-//     if (!jobId) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "jobId is required",
-//       });
-//     }
-
-//     const job = await Job.findById(jobId);
-//     if (!job) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Job not found",
-//       });
-//     }
-
-//     const application = await Application.create({
-//       fullName,
-//       email,
-//       phone,
-//       coverLetter,
-//       resume,
-//       job: jobId,
-//       userId: req.user?._id, // only if you have auth middleware; otherwise remove
-//       status: "Pending",
-//     });
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Application submitted successfully",
-//       application,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
 const submitApplication = async (req, res) => {
   try {
-    console.log("\n=== SUBMIT APPLICATION DEBUG ===");
-    console.log("req.body:", req.body);
-    console.log("req.file:", req.file);
-    console.log("req.user:", req.user);
-
     const { fullName, email, phone, coverLetter, jobId } = req.body;
     const resumePath = req.file ? req.file.path : null;
 
@@ -246,16 +175,13 @@ const submitApplication = async (req, res) => {
     });
 
     console.log("✅ Application created successfully");
-    console.log("=== END DEBUG ===\n");
-
     res.status(201).json({
       success: true,
       message: "Application submitted successfully",
       application,
     });
   } catch (error) {
-    console.log("❌ Error:", error.message);
-    console.log("=== END DEBUG ===\n");
+    console.log("Error:", error.message);
 
     res.status(500).json({
       success: false,

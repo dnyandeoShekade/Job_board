@@ -1,5 +1,5 @@
 const express = require("express");
-
+// Login/register URLs.
 const {
   registerUser,
   loginUser,

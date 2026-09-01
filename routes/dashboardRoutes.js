@@ -1,5 +1,5 @@
 const express = require("express");
-
+// Dashboard URLs.
 const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");

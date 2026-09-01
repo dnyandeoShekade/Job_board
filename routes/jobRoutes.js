@@ -1,6 +1,6 @@
-
 const express = require("express");
 const router = express.Router();
+// Job-related URLs.
 // app.use(express.json());
 // app.use("/api/jobs", jobRoutes);
 const {

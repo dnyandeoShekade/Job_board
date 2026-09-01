@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// user data structre
+// Defines user data such as name, email, password, role.
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

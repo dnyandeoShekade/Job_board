@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+// Defines application data such as user, job, status, applied date.
 const ApplicationSchema = new mongoose.Schema(
   {
     userId: {

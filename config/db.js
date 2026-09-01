@@ -17,3 +17,6 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
+// What is it? → A folder used to keep configuration-related code/settings in one place.
+// Why need it? → Instead of putting settings everywhere in your project, you keep them organized here.

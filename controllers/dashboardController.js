@@ -1,7 +1,7 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
 const User = require("../models/User");
-
+// Calculate and return dashboard statistics.
 const getUserDashboard = async (req, res) => {
   try {
     console.log("\n=== DASHBOARD REQUEST ===");
