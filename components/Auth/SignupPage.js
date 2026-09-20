@@ -8,9 +8,8 @@ import { Mail, Lock, User, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState("Candidate");
+  const [role, setRole] = useState("user");
   const [error, setError] = useState("");
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -154,28 +153,36 @@ export default function SignupPage() {
               <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
                 I AM A
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <button
                   type="button"
-                  onClick={() => setRole("Candidate")}
-                  className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer ${
-                    role === "Candidate"
-                      ? "bg-indigo-600 text-white shadow-indigo-100 ring-2 ring-indigo-600/20"
-                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-                  }`}
+                  onClick={() => setRole("user")}
+                  className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer ${role === "user"
+                    ? "bg-indigo-600 text-white shadow-indigo-100 ring-2 ring-indigo-600/20"
+                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                    }`}
                 >
                   <span className="text-base">🙋‍♀️</span> Candidate
                 </button>
                 <button
                   type="button"
-                  onClick={() => setRole("Recruiter")}
-                  className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer ${
-                    role === "Recruiter"
-                      ? "bg-indigo-600 text-white shadow-indigo-100 ring-2 ring-indigo-600/20"
-                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-                  }`}
+                  onClick={() => setRole("recruiter")}
+                  className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer ${role === "recruiter"
+                    ? "bg-indigo-600 text-white shadow-indigo-100 ring-2 ring-indigo-600/20"
+                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                    }`}
                 >
                   <span className="text-base">🏢</span> Recruiter
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRole("admin")}
+                  className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer ${role === "admin"
+                    ? "bg-indigo-600 text-white shadow-indigo-100 ring-2 ring-indigo-600/20"
+                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                    }`}
+                >
+                  <span className="text-base">🛡️</span> Admin
                 </button>
               </div>
             </div>
