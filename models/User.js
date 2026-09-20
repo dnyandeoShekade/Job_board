@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
     enum: ["user", "admin"], //enum means only these values are allowed.
-    default: "user",
+    // default: "user",
     // Mongoose will throw a validation error.
   },
   savedJobs: [
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Job",
     },
-  ]
+  ],
 });
 module.exports = mongoose.model("user", userSchema);
 

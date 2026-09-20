@@ -12,7 +12,7 @@ if (typeof generateToken !== "function") {
 // ================= Register User =================
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -31,7 +31,7 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: "user",
+      role: role === "admin" ? "admin" : "user",
     });
 
     // Generate JWT Token
@@ -79,10 +79,7 @@ const loginUser = async (req, res) => {
     //     message: "Invalid password",
     //   });
     // }
-    const isPasswordMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -200,7 +197,7 @@ const changePassword = async (req, res) => {
 
     const isCurrentPasswordMatch = await bcrypt.compare(
       currentPassword,
-      user.password
+      user.password,
     );
 
     if (!isCurrentPasswordMatch) {
@@ -259,5 +256,5 @@ module.exports = {
   getProfile,
   updateProfile,
   changePassword,
-  getMe
+  getMe,
 };
