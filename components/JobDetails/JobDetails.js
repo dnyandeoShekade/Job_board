@@ -111,7 +111,7 @@ export default function JobDetails({ job }) {
               </div>
               <div className="flex items-center gap-2">
                 <Briefcase className="w-4 h-4 text-slate-400" />
-                <span>{job.type}</span>
+                <span>{job.jobType || "Not specified"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-slate-400" />
@@ -140,7 +140,7 @@ export default function JobDetails({ job }) {
                   <span>Experience</span>
                 </div>
                 <div className="font-semibold text-slate-900 text-sm sm:text-base">
-                  {job.experience}
+                  {job.experience || "Not specified"}
                 </div>
               </div>
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100">

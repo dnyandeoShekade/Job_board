@@ -164,7 +164,7 @@ export default function SignupPage() {
                 >
                   <span className="text-base">🙋‍♀️</span> Candidate
                 </button>
-                <button
+                {/* <button
                   type="button"
                   onClick={() => setRole("recruiter")}
                   className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer ${role === "recruiter"
@@ -173,7 +173,7 @@ export default function SignupPage() {
                     }`}
                 >
                   <span className="text-base">🏢</span> Recruiter
-                </button>
+                </button> */}
                 <button
                   type="button"
                   onClick={() => setRole("admin")}
@@ -182,7 +182,7 @@ export default function SignupPage() {
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
                     }`}
                 >
-                  <span className="text-base">🛡️</span> Admin
+                  <span className="text-base"></span> Recruiter
                 </button>
               </div>
             </div>

@@ -94,18 +94,18 @@ export default function Stats() {
   };
 
   return (
-    <section className="relative py-16 md:py-24 bg-white overflow-hidden">
+    <section className="relative py-12 sm:py-16 md:py-20 bg-white overflow-hidden">
       {/* Subtle Background Accents */}
-      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-blue-50 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-purple-50 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-1/2 left-0 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-blue-50/70 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-1/2 right-0 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-purple-50/70 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header (Optional, adds nice context) */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#0f172a] tracking-tight">
+        {/* Section Header */}
+        <div className="text-center mb-8 sm:mb-12 md:mb-14">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0f172a] tracking-tight">
             Trusted by professionals worldwide
           </h2>
-          <p className="mt-4 text-base md:text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="mt-3 text-sm sm:text-base md:text-lg text-gray-500 max-w-2xl mx-auto">
             We're connecting top talent with industry-leading companies every
             single day.
           </p>
@@ -116,7 +116,7 @@ export default function Stats() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
         >
           {stats.map((stat) => {
             const Icon = stat.icon;
@@ -124,23 +124,23 @@ export default function Stats() {
               <motion.div
                 key={stat.id}
                 variants={itemVariants}
-                whileHover={{ y: -5 }}
-                className="group relative flex flex-col items-center text-center p-8 bg-white rounded-[24px] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-300"
+                whileHover={{ y: -4 }}
+                className="group relative flex flex-col items-center text-center p-5 sm:p-7 bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.07)] transition-all duration-300"
               >
                 {/* Icon Container */}
                 <div
-                  className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 ${stat.bg} ${stat.color}`}
+                  className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-105 ${stat.bg} ${stat.color}`}
                 >
-                  <Icon className="w-8 h-8" strokeWidth={1.5} />
+                  <Icon className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.7} />
                 </div>
 
                 {/* Animated Number */}
-                <h3 className="text-3xl md:text-[40px] font-extrabold text-slate-900 mb-2 tracking-tight">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-1 tracking-tight">
                   <AnimatedCounter value={stat.number} suffix={stat.suffix} />
                 </h3>
 
                 {/* Label */}
-                <p className="text-[15px] font-semibold text-gray-500">
+                <p className="text-xs sm:text-sm font-semibold text-gray-500">
                   {stat.label}
                 </p>
 

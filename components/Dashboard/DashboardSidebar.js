@@ -12,6 +12,7 @@ import {
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+  { label: 'AI Resume Analyzer', icon: Sparkles, href: '/resume-analyzer' },
 ];
 
 export default function DashboardSidebar({ open, onClose }) {

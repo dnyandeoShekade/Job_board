@@ -15,10 +15,11 @@ import {
 } from "lucide-react";
 import BASE_URL from "@/utils/api";
 
-export default function EditJobPage({ jobSlug, initialJob }) {
+export default function EditJobPage({ jobSlug }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [initialJob, setInitialJob] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     company: "",
@@ -30,18 +31,48 @@ export default function EditJobPage({ jobSlug, initialJob }) {
   });
 
   useEffect(() => {
-    if (initialJob) {
-      setFormData({
-        title: initialJob.title || "",
-        company: initialJob.company || "",
-        location: initialJob.location || "",
-        salary: initialJob.salary || "",
-        category: initialJob.category || "",
-        description: initialJob.description || "",
-        status: initialJob.status || "active",
-      });
+    async function fetchJob() {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`${BASE_URL}/jobs/${jobSlug}`, {
+          method: "GET",
+          headers: headers,
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          setMessage("Job not found");
+          setLoading(false);
+          return;
+        }
+
+        const result = await response.json();
+        const job = result.job || result.data || result;
+        
+        setInitialJob(job);
+        setFormData({
+          title: job.title || "",
+          company: job.company || "",
+          location: job.location || "",
+          salary: job.salary || "",
+          category: job.category || "",
+          description: job.description || "",
+          status: job.status || "active",
+        });
+      } catch (error) {
+        setMessage(error.message || "Failed to load job");
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [initialJob]);
+
+    fetchJob();
+  }, [jobSlug]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -84,6 +115,7 @@ export default function EditJobPage({ jobSlug, initialJob }) {
       
       setTimeout(() => {
         router.push("/admin/manage-jobs");
+        router.refresh();
       }, 1500);
     } catch (error) {
       setMessage(error.message || "Failed to update job");
@@ -94,6 +126,14 @@ export default function EditJobPage({ jobSlug, initialJob }) {
 
   function handleCancel() {
     router.push("/admin/manage-jobs");
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+      </div>
+    );
   }
 
   if (!initialJob) {

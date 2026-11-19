@@ -16,9 +16,14 @@ import {
   Clock,
 } from "lucide-react";
 
-export default function JobSearchDashboard({ jobs, hero }) {
+export default function JobSearchDashboard({
+  jobs,
+  hero,
+  page,
+  totalPages,
+  onPageChange,
+}) {
   const searchParams = useSearchParams();
-  const [activePage, setActivePage] = useState(1);
   const [savedJobs, setSavedJobs] = useState([]);
 
   // Interactive Filter States
@@ -38,29 +43,29 @@ export default function JobSearchDashboard({ jobs, hero }) {
 
   // Handle URL query parameters for category filtering
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    const keywordParam = searchParams.get('keyword');
-    const locationParam = searchParams.get('location');
-    
+    const categoryParam = searchParams.get("category");
+    const keywordParam = searchParams.get("keyword");
+    const locationParam = searchParams.get("location");
+
     if (categoryParam) {
       // Map full category names to filter names
       const categoryMap = {
         "Frontend Development": "Frontend",
         "Backend Development": "Backend",
         "Full Stack Development": "Full Stack",
-        "DevOps": "DevOps",
+        DevOps: "DevOps",
         "UI/UX Design": "UI/UX",
         "Data Science": "Data Science",
       };
-      
+
       const filterCategory = categoryMap[categoryParam] || categoryParam;
       setSelectedCategories({ [filterCategory]: true });
     }
-    
+
     if (keywordParam) {
       setSearchKeyword(keywordParam);
     }
-    
+
     if (locationParam) {
       setSearchLocation(locationParam);
     }
@@ -421,13 +426,13 @@ export default function JobSearchDashboard({ jobs, hero }) {
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1">
                       <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-lg font-bold text-slate-700 shrink-0 overflow-hidden">
-                        {(job.logo || job.companyLogo || job.logoUrl) ? (
-                          <img 
-                            src={job.logo || job.companyLogo || job.logoUrl} 
+                        {job.logo || job.companyLogo || job.logoUrl ? (
+                          <img
+                            src={job.logo || job.companyLogo || job.logoUrl}
                             alt={`${job.company} logo`}
                             className="w-full h-full object-cover"
                             onError={(e) => {
-                              e.target.style.display = 'none';
+                              e.target.style.display = "none";
                               e.target.parentElement.innerHTML = `<span>${job.company?.charAt(0) || "J"}</span>`;
                             }}
                           />
@@ -517,27 +522,38 @@ export default function JobSearchDashboard({ jobs, hero }) {
           )}
 
           <div className="flex items-center justify-center gap-1 pt-6">
-            <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition">
+            {/* Previous Button */}
+            <button
+              onClick={() => onPageChange(page - 1)}
+              disabled={page === 1}
+              className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            {[1, 2, 3, 4, 5].map((pageNum) => (
-              <button
-                key={pageNum}
-                onClick={() => setActivePage(pageNum)}
-                className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition ${
-                  activePage === pageNum
-                    ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
-                    : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                {pageNum}
-              </button>
-            ))}
-            <span className="text-slate-400 px-1">...</span>
-            <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition">
-              13
-            </button>
-            <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition">
+
+            {/* Page Numbers */}
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+              (pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => onPageChange(pageNum)}
+                  className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition ${
+                    page === pageNum
+                      ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
+                      : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ),
+            )}
+
+            {/* Next Button */}
+            <button
+              onClick={() => onPageChange(page + 1)}
+              disabled={page === totalPages}
+              className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

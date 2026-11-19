@@ -183,8 +183,11 @@ export default function JobSummaryCard({ job }) {
               <Calendar className="w-3.5 h-3.5" />
               <span>
                 {job.createdAt
-                  ? new Date(job.createdAt).toLocaleDateString()
+                  ? new Date(job.createdAt).toLocaleDateString("en-IN")
                   : "Recently Posted"}
+                {/* {job.createdAt
+                  ? new Date(job.createdAt).toLocaleDateString()
+                  : "Recently Posted"} */}
               </span>
             </div>
           </div>

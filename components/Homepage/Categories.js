@@ -77,21 +77,26 @@ export default function Categories() {
   };
 
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-10 sm:py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl font-bold text-[#0b1220] mb-10"
-        >
-          Browse by Categories
-        </motion.h2>
+        <div className="text-center sm:text-left mb-8 sm:mb-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl sm:text-3xl font-bold text-[#0b1220]"
+          >
+            Browse by Categories
+          </motion.h2>
+          <p className="mt-2 text-xs sm:text-sm text-gray-500">
+            Explore diverse career paths tailored to your expertise
+          </p>
+        </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {categories.map((category, index) => {
             const Icon = category.icon;
             return (
@@ -101,34 +106,34 @@ export default function Categories() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{
-                  duration: 0.5,
-                  delay: index * 0.1,
+                  duration: 0.4,
+                  delay: index * 0.05,
                   ease: "easeOut",
                 }}
                 whileHover={{
-                  y: -8,
-                  transition: { duration: 0.3 },
+                  y: -6,
+                  transition: { duration: 0.2 },
                 }}
                 onClick={() => handleCategoryClick(category.name)}
                 className="cursor-pointer"
               >
-                <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center">
+                <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-gray-100 hover:border-indigo-100 hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center h-full justify-between">
                   {/* Icon Container */}
                   <motion.div
-                    whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                    whileHover={{ rotate: [0, -8, 8, -8, 0] }}
                     transition={{ duration: 0.5 }}
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center mb-4`}
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center mb-3 shrink-0`}
                   >
-                    <Icon className={`w-8 h-8 ${category.iconColor}`} />
+                    <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${category.iconColor}`} />
                   </motion.div>
 
                   {/* Category Name */}
-                  <h3 className="text-sm font-bold text-[#0b1220] mb-2 line-clamp-2 min-h-[40px]">
+                  <h3 className="text-xs sm:text-sm font-bold text-[#0b1220] mb-1 line-clamp-2">
                     {category.name}
                   </h3>
 
                   {/* Job Count */}
-                  <p className="text-xs text-gray-400 font-medium">
+                  <p className="text-[11px] sm:text-xs text-gray-400 font-medium">
                     {category.jobs}
                   </p>
                 </div>

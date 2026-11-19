@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import MyApplications from "@/components/Dashboard/MyApplications";
-import { formatApplication, getUserApplications } from "@/services/applicationService";
+import { formatApplication, getUserApplications } from "@/services/application.service";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);

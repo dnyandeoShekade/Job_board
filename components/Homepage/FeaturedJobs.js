@@ -55,21 +55,21 @@ export default function FeaturedJobs() {
         ))}
       </div>
 
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-12">
           <div>
-            <h2 className="text-3xl md:text-[38px] font-extrabold text-[#0f172a] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-[36px] font-extrabold text-[#0f172a] tracking-tight">
               Featured Jobs
             </h2>
-            <p className="mt-3 text-base text-gray-500 font-medium">
+            <p className="mt-2 text-sm sm:text-base text-gray-500 font-medium">
               Top opportunities from leading companies. Apply now and take the
               next step in your career.
             </p>
           </div>
           <Link
             href="/job"
-            className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#2f6fff] hover:text-[#2052c9] transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm sm:text-[15px] font-semibold text-[#2f6fff] hover:text-[#2052c9] transition-colors shrink-0"
           >
             View all jobs
             <ArrowRight className="w-4 h-4" />
@@ -77,7 +77,7 @@ export default function FeaturedJobs() {
         </div>
 
         {/* Jobs Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {loading ? (
             // Loading skeleton
             [...Array(6)].map((_, i) => (
@@ -92,20 +92,21 @@ export default function FeaturedJobs() {
               <Link
                 key={job._id}
                 href={`/job/${job.slug}`}
-                className="group flex flex-col bg-white rounded-[20px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-300 relative border border-gray-100"
+                className="group flex flex-col bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-300 relative border border-gray-100 hover:border-blue-100"
               >
                 {/* Bookmark Icon */}
                 <button 
                   onClick={(e) => e.preventDefault()}
-                  className="absolute top-5 right-5 text-gray-300 hover:text-gray-500 transition-colors z-10"
+                  className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors z-10 p-1"
+                  aria-label="Bookmark job"
                 >
                   <Bookmark className="w-5 h-5" strokeWidth={2} />
                 </button>
 
                 {/* Header: Logo + Title + Company in ONE ROW */}
-                <div className="flex items-start gap-3 mb-6 pr-6">
+                <div className="flex items-start gap-3 mb-4 pr-7">
                   {/* Company Logo Box */}
-                  <div className="w-[46px] h-[46px] shrink-0 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center p-2 mt-0.5 overflow-hidden">
+                  <div className="w-11 h-11 shrink-0 rounded-xl bg-slate-50 border border-gray-100 flex items-center justify-center p-2 mt-0.5 overflow-hidden">
                     {(job.logo || job.companyLogo || job.logoUrl) ? (
                       <img 
                         src={job.logo || job.companyLogo || job.logoUrl} 
@@ -122,15 +123,15 @@ export default function FeaturedJobs() {
                   </div>
 
                   {/* Title & Company Wrapper */}
-                  <div className="flex flex-col">
-                    <h3 className="text-[16px] font-bold text-slate-900 leading-tight mb-1 line-clamp-2">
+                  <div className="flex flex-col min-w-0">
+                    <h3 className="text-base font-bold text-slate-900 leading-tight mb-1 truncate">
                       {job.title}
                     </h3>
-                    <div className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-600">
-                      {job.company}
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600">
+                      <span className="truncate">{job.company}</span>
                       {/* Verified Badge */}
                       <svg
-                        className="w-[14px] h-[14px] text-[#2f6fff]"
+                        className="w-3.5 h-3.5 text-[#2f6fff] shrink-0"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -145,42 +146,42 @@ export default function FeaturedJobs() {
                 </div>
 
                 {/* Location & Salary */}
-                <div className="flex flex-col gap-2.5 mb-5">
+                <div className="flex flex-col gap-2 mb-4">
                   <div className="flex items-center gap-2 text-gray-500">
-                    <MapPin className="w-[18px] h-[18px] stroke-[1.5]" />
-                    <span className="text-[13px] font-medium">
+                    <MapPin className="w-4 h-4 shrink-0 text-gray-400 stroke-[1.5]" />
+                    <span className="text-xs sm:text-[13px] font-medium truncate">
                       {job.location}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-500">
-                    <CircleDollarSign className="w-[18px] h-[18px] stroke-[1.5]" />
-                    <span className="text-[13px] font-medium">{job.salary}</span>
+                    <CircleDollarSign className="w-4 h-4 shrink-0 text-gray-400 stroke-[1.5]" />
+                    <span className="text-xs sm:text-[13px] font-medium truncate">{job.salary}</span>
                   </div>
                 </div>
 
                 {/* Push content down */}
-                <div className="mt-auto">
+                <div className="mt-auto pt-2 border-t border-gray-50">
                   {/* Job Type & Category Badges */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-1.5 mb-3.5">
                     {job.jobType && (
-                      <span className="inline-block px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wide bg-green-50 text-green-700">
+                      <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wide bg-green-50 text-green-700">
                         {job.jobType}
                       </span>
                     )}
                     {job.category && (
-                      <span className="inline-block px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wide bg-purple-50 text-purple-700">
+                      <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wide bg-purple-50 text-purple-700">
                         {job.category}
                       </span>
                     )}
                   </div>
 
                   {/* Apply Button */}
-                  <button
-                    className="w-full py-3 rounded-xl text-white text-[14px] font-semibold flex items-center justify-center gap-2 transition-colors bg-[#155DFC] hover:bg-[#0d47c9]"
+                  <div
+                    className="w-full py-2.5 rounded-xl text-white text-sm font-semibold flex items-center justify-center gap-2 transition-colors bg-[#155DFC] group-hover:bg-[#0d47c9]"
                   >
                     View Details
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
                 </div>
               </Link>
             ))

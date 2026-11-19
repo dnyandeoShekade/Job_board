@@ -42,16 +42,16 @@ const itemVariants = {
 
 export default function TrustedBrands() {
   return (
-    <section className="w-full bg-white py-16 px-4">
-      <div className="flex items-center justify-center gap-3 mb-10">
+    <section className="w-full bg-white py-10 sm:py-16 px-4">
+      <div className="flex items-center justify-center gap-3 mb-8 sm:mb-10 max-w-xl mx-auto">
         <div className="flex-1 h-px bg-gray-200"></div>
-        <div className="w-2.5 h-2.5 bg-[#7eb356] rotate-45 rounded-sm"></div>
+        <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#7eb356] rotate-45 rounded-sm"></div>
 
-        <h2 className="text-xl md:text-2xl font-semibold text-slate-800">
+        <h2 className="text-base sm:text-xl md:text-2xl font-semibold text-slate-800 text-center whitespace-nowrap">
           Trusted by top brands
         </h2>
 
-        <div className="w-2.5 h-2.5 bg-[#7eb356] rotate-45 rounded-sm"></div>
+        <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#7eb356] rotate-45 rounded-sm"></div>
         <div className="flex-1 h-px bg-gray-200"></div>
       </div>
 
@@ -60,7 +60,7 @@ export default function TrustedBrands() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-wrap justify-center gap-5"
+        className="flex flex-wrap justify-center gap-3 sm:gap-5 max-w-5xl mx-auto"
       >
         {brands.map((brand, index) => {
           const Icon = brand.Icon;
@@ -70,15 +70,15 @@ export default function TrustedBrands() {
               key={brand.name}
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -3 }}
-              className={`w-40 h-[72px] rounded-2xl border border-gray-100 bg-white flex items-center justify-center gap-3 text-gray-500 transition-all duration-300 cursor-pointer ${
+              className={`w-[135px] sm:w-40 h-14 sm:h-[72px] rounded-xl sm:rounded-2xl border border-gray-100 bg-white flex items-center justify-center gap-2 sm:gap-3 text-gray-500 transition-all duration-300 cursor-pointer ${
                 index === 0
-                  ? "shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
-                  : "shadow-sm hover:shadow-lg"
+                  ? "shadow-[0_8px_30px_rgb(0,0,0,0.06)]"
+                  : "shadow-sm hover:shadow-md"
               } ${brand.hoverColor}`}
             >
-              <Icon className="w-6 h-6" />
+              <Icon className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
 
-              <span className="font-semibold text-slate-700 text-sm">
+              <span className="font-semibold text-slate-700 text-xs sm:text-sm">
                 {brand.name}
               </span>
             </motion.div>

@@ -72,6 +72,8 @@ export default function AddJobPage() {
         location: "",
         salary: "",
         category: "",
+        experience: "",
+        jobType: "",
         companyLogo: "",
         description: "",
       });

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Upload, Check, AlertCircle } from "lucide-react";
-import { submitApplication } from "@/services/applicationService";
+import { submitApplication } from "@/services/application.service";
 import { APPLICATION_FORM_CONFIG } from "@/data/applicationFormData";
 
 export default function JobApplicationForm({ applicationData }) {

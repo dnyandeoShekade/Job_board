@@ -10,8 +10,8 @@ import {
   Edit3,
   Trash2,
 } from "lucide-react";
-export default function ManageJobsPage({ jobs }) {
-  const [jobList, setJobList] = useState(jobs || []);
+export default function ManageJobsPage({ jobs = [] }) {
+  const [jobList, setJobList] = useState(jobs);
   const [deletingSlug, setDeletingSlug] = useState(null);
 
   async function handleDelete(slug, title) {
@@ -136,7 +136,9 @@ export default function ManageJobsPage({ jobs }) {
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-slate-400" />
-                    {new Date(job.createdAt).toLocaleDateString()}
+                    {job.createdAt && !Number.isNaN(Date.parse(job.createdAt))
+                      ? new Date(job.createdAt).toLocaleDateString("en-IN")
+                      : "Date unavailable"}
                   </span>
                 </div>
               </div>
