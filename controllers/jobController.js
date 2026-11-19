@@ -70,20 +70,43 @@ const createJob = async (req, res) => {
 };
 const getALlJobs = async (req, res) => {
   try {
+    // Existing filters
     const keyword = req.query.keyword || "";
     const location = req.query.location || "";
     const category = req.query.category || "";
 
-    const jobs = await Job.find({
+    // Pagination
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    // Common filter
+    const filter = {
       title: { $regex: keyword, $options: "i" },
       location: { $regex: location, $options: "i" },
       category: { $regex: category, $options: "i" },
-    }).sort({ createdAt: -1 });
+    };
+
+    // Get total number of matching jobs
+    const totalJobs = await Job.countDocuments(filter);
+
+    // Get only jobs for current page
+    const jobs = await Job.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalJobs / limit);
 
     res.status(200).json({
       success: true,
       count: jobs.length,
-      totalJobs: jobs.length,
+      totalJobs,
+      currentPage: page,
+      totalPages,
+      limit,
       jobs,
     });
   } catch (error) {
@@ -104,13 +127,18 @@ const getSingleJob = async (req, res) => {
       return res.status(404).json({ success: false, message: "Job not found" });
     }
 
-    // Optional: view count increment (matches "Views" shown on frontend)
-    job.views = (job.views || 0) + 1;
-    await job.save();
+    // Atomically increment view count using MongoDB $inc
+    // Single operation: increments and returns updated doc in one round trip
+    // Prevents race conditions when multiple users view same job simultaneously
+    const updatedJob = await Job.findOneAndUpdate(
+      { slug: req.params.slug },
+      { $inc: { views: 1 } },
+      { new: true }
+    );
 
     res.status(200).json({
       success: true,
-      data: job, // frontend JobDetails expects `job.data` from getJobBySlugData -> ensure service returns data:job
+      data: updatedJob, // frontend JobDetails expects `job.data` from getJobBySlugData
     });
   } catch (error) {
     res

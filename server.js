@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const resumeRoutes = require("./routes/resumeRoutes");
 
 require("dotenv").config(); //Loads secret variables from .env file.
 //Secrets stay secure ✅
@@ -53,6 +54,7 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/resume", resumeRoutes);
 
 // test route
 // Incoming request data.

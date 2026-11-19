@@ -1,6 +1,11 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+
 // Checks if the user is logged in/authenticated.
+// Simple, straightforward authentication without in-memory cache.
+// Each request validates the token and fetches user from DB.
+// This ensures role changes, password updates, and user deletions take effect immediately.
+// Cache would introduce staleness and security risks (blocked users can access until TTL expires).
 const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.header("Authorization");
@@ -20,7 +25,8 @@ const authMiddleware = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Find user
+    // Find user - no cache, always fresh from DB
+    // This ensures immediate effect of role changes, deletions, etc.
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
