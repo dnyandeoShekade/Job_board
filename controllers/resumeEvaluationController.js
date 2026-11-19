@@ -10,7 +10,14 @@ const { validateEvaluationPayload } = require("../services/resumeEvaluation/sche
 const extractTextFromPdf = async (filePath) => {
   const pdfParse = require("pdf-parse");
   const dataBuffer = fs.readFileSync(filePath);
+  console.log("=== PDF EXTRACT DEBUG ===");
+  console.log("File path:", filePath);
+  console.log("Buffer size:", dataBuffer.length, "bytes");
   const pdfData = await pdfParse(dataBuffer);
+  console.log("Pages:", pdfData.numpages);
+  console.log("Extracted text length:", pdfData.text.length);
+  console.log("Extracted text preview (first 200 chars):", pdfData.text.substring(0, 200));
+  console.log("=== END PDF EXTRACT DEBUG ===");
   return pdfData.text || "";
 };
 
@@ -26,6 +33,13 @@ const evaluateFileHandler = async (req, res) => {
         message: "PDF resume file is required. Please upload a .pdf document.",
       });
     }
+
+    console.log("=== UPLOAD DEBUG ===");
+    console.log("Filename:", req.file.originalname);
+    console.log("MIME type:", req.file.mimetype);
+    console.log("File size:", req.file.size, "bytes");
+    console.log("Buffer path:", req.file.path);
+    console.log("=== END UPLOAD DEBUG ===");
 
     const filePath = req.file.path;
     const originalFilename = req.file.originalname;
