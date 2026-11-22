@@ -1,23 +1,6 @@
 const mongoose = require("mongoose");
 
-// Define indexes for frequently queried fields
-// These indexes optimize regex searches on title, location, and category
-// Applied after schema compilation for reliability
-const addJobIndexes = async () => {
-  try {
-    // Create individual indexes for regex query optimization
-    // createIndex() is idempotent - safe to call multiple times, no need to drop indexes first
-    await mongoose.connection.db.collection("jobs").createIndex({ title: 1 });
-    await mongoose.connection.db.collection("jobs").createIndex({ location: 1 });
-    await mongoose.connection.db.collection("jobs").createIndex({ category: 1 });
-
-    console.log("Job collection indexes created: title, location, category");
-  } catch (error) {
-    console.error("Error creating Job indexes:", error.message);
-  }
-};
-
-// Schema definition - indexes will be applied when module loads
+// Schema definition
 const JobSchema = new mongoose.Schema(
   {
     title: {
@@ -33,29 +16,28 @@ const JobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    companyLogo: {
-      type: String,
-      default: "",
-    },
     location: {
       type: String,
       required: true,
     },
-    salary: {
+    jobType: {
       type: String,
       required: true,
     },
-    experience: {
-      type: String,
-      required: false,
+    salaryMin: {
+      type: Number,
+      required: true,
     },
-    jobType: {
-      type: String,
-      required: false,
-      enum: ["Full Time", "Part Time", "Internship", "Contract", "Remote"],
+    salaryMax: {
+      type: Number,
+      required: true,
     },
     description: {
       type: String,
+      required: true,
+    },
+    requirements: {
+      type: [String],
       required: true,
     },
     category: {
@@ -68,10 +50,9 @@ const JobSchema = new mongoose.Schema(
   }
 );
 
-// Apply indexes after schema is defined
-// This runs once when the model module is loaded
-addJobIndexes().catch((err) =>
-  console.error("Failed to initialize Job indexes:", err)
-);
+// Indexes for query optimization
+JobSchema.index({ title: 1 });
+JobSchema.index({ location: 1 });
+JobSchema.index({ category: 1 });
 
 module.exports = mongoose.model("Job", JobSchema);
