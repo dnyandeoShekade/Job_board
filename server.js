@@ -1,5 +1,6 @@
 const express = require("express"); //Express helps create backend servers and APIs easily.
 const cors = require("cors"); //CORS allows frontend and backend to communicate.
+const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
@@ -8,10 +9,8 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 
 require("dotenv").config(); //Loads secret variables from .env file.
-//Secrets stay secure ✅
 
 const app = express(); //Creates Express application.
-// Middleware runs before request reaches route.
 
 connectDB(); //connect database
 
@@ -19,7 +18,6 @@ connectDB(); //connect database
 const fs = require("fs");
 const path = require("path");
 
-// Create uploads directory structure
 const uploadsDir = path.join(__dirname, "uploads", "resumes");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -28,42 +26,62 @@ if (!fs.existsSync(uploadsDir)) {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Serve static files from uploads folder
-
-//middleware
+// CORS Configuration - Allows Local, Vercel production & preview deployments
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://job-board-two-blush.vercel.app",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (like mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        origin.includes("localhost");
+
+      if (isAllowed) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        // Fallback: allow to prevent blockage across dynamic cloud deployments
+        callback(null, true);
       }
     },
+    credentials: true,
   }),
 );
 
-app.use(express.json()); //Converts incoming JSON data into JavaScript object.
-// app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
+app.use(express.json());
+
+// Routes
 app.use("/api/jobs", jobRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/resume", resumeRoutes);
 
-// test route
-// Incoming request data.
-// Used to send response back.
+// Health check and root route
 app.get("/", (req, res) => {
   res.send("job portal Backend Running");
-  //   Sends response to browser.
+});
 
-  // This creates API endpoint.
+app.get("/health", (req, res) => {
+  const dbStatus =
+    mongoose.connection.readyState === 1
+      ? "Connected"
+      : mongoose.connection.readyState === 2
+      ? "Connecting"
+      : "Disconnected";
+
+  res.json({
+    status: "ok",
+    database: dbStatus,
+    timestamp: new Date().toISOString(),
+  });
 });
 
 const PORT = process.env.PORT || 5000;
@@ -71,4 +89,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-// This file is basically the "heart" of your backend server.

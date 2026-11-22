@@ -23,7 +23,8 @@ const connectDB = async () => {
   try {
     const rawUri = process.env.MONGO_URI;
     if (!rawUri) {
-      throw new Error("MONGO_URI environment variable is missing or undefined.");
+      console.error("CRITICAL: MONGO_URI environment variable is missing.");
+      return;
     }
 
     const connectionUri = formatMongoUri(rawUri);
@@ -36,8 +37,8 @@ const connectDB = async () => {
 
     console.log("MongoDB Connected");
   } catch (error) {
-    console.log("Database connection error:", error);
-    process.exit(1);
+    console.error("Database connection error:", error.message || error);
+    // Do not call process.exit(1) so Express stays running to serve CORS & health checks
   }
 };
 
