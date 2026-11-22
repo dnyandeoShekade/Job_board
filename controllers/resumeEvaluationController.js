@@ -8,17 +8,27 @@ const { validateEvaluationPayload } = require("../services/resumeEvaluation/sche
  * Extracts plain text from a PDF file using pdf-parse
  */
 const extractTextFromPdf = async (filePath) => {
-  const pdfParse = require("pdf-parse");
+  const pdfParsePkg = require("pdf-parse");
   const dataBuffer = fs.readFileSync(filePath);
-  console.log("=== PDF EXTRACT DEBUG ===");
-  console.log("File path:", filePath);
-  console.log("Buffer size:", dataBuffer.length, "bytes");
-  const pdfData = await pdfParse(dataBuffer);
-  console.log("Pages:", pdfData.numpages);
-  console.log("Extracted text length:", pdfData.text.length);
-  console.log("Extracted text preview (first 200 chars):", pdfData.text.substring(0, 200));
-  console.log("=== END PDF EXTRACT DEBUG ===");
-  return pdfData.text || "";
+
+  if (typeof pdfParsePkg === "function") {
+    const pdfData = await pdfParsePkg(dataBuffer);
+    return pdfData.text || "";
+  }
+
+  if (pdfParsePkg.PDFParse) {
+    const parser = new pdfParsePkg.PDFParse({ data: dataBuffer });
+    try {
+      const result = await parser.getText();
+      return result.text || "";
+    } finally {
+      if (typeof parser.destroy === "function") {
+        await parser.destroy().catch(() => {});
+      }
+    }
+  }
+
+  throw new Error("Compatible PDF parser interface not found.");
 };
 
 /**

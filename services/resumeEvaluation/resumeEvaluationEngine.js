@@ -137,6 +137,7 @@ function evaluateResume(resumeInput, jobDescription = null) {
   const softSkills = detectedSkills.filter((s) => /communication|leadership|teamwork|problem-solving/i.test(s));
 
   const finalResponse = {
+    candidateName: parsedResume.candidateName || "Candidate",
     overallScore: scoringResult.overallScore,
     scoreBreakdown: scoringResult.scoreBreakdown,
     scoreExplanation: scoringResult.scoreExplanation,
