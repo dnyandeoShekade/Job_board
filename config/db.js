@@ -21,7 +21,17 @@ function formatMongoUri(rawUri) {
 // Function to connect MongoDB
 const connectDB = async () => {
   try {
-    const connectionUri = formatMongoUri(process.env.MONGO_URI);
+    const rawUri = process.env.MONGO_URI;
+    if (!rawUri) {
+      throw new Error("MONGO_URI environment variable is missing or undefined.");
+    }
+
+    const connectionUri = formatMongoUri(rawUri);
+
+    // Safe logging without exposing password
+    const safeDisplay = connectionUri.replace(/:([^@]+)@/, ":****@");
+    console.log("Connecting to MongoDB:", safeDisplay);
+
     await mongoose.connect(connectionUri);
 
     console.log("MongoDB Connected");
