@@ -1,5 +1,24 @@
 import { apiClient } from "./apiClient";
 
+/**
+ * Formats a single application object for dashboard display
+ * Extracts and reformats relevant fields from the application data
+ */
+export function formatApplication(application) {
+  if (!application) return application;
+
+  return {
+    id: application._id || application.id,
+    fullName: application.fullName || application.name || "",
+    email: application.email || "",
+    jobTitle: application.jobTitle || application.position || "",
+    status: application.status || application.applicationStatus || "pending",
+    appliedDate: application.appliedDate || application.createdAt || "",
+    resumeFile: application.resumeFile || application.resume || "",
+    coverLetter: application.coverLetter || "",
+  };
+}
+
 export async function submitApplication(applicationData) {
   const token = localStorage.getItem("token");
 
@@ -35,6 +54,9 @@ export async function getMyApplications() {
     cache: "no-store",
   });
 }
+
+// Alias for getUserApplications - same functionality
+export const getUserApplications = getMyApplications;
 
 export async function getAllApplications() {
   const token = localStorage.getItem("token");

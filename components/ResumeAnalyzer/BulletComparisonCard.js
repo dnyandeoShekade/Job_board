@@ -72,7 +72,7 @@ export default function BulletComparisonCard({ improvedExperience = [] }) {
 
       <div className="space-y-4">
         {improvedExperience.map((item, idx) => {
-          const badge = getFrameworkBadge(item.frameworkUsed);
+          const badge = getFrameworkBadge(item.frameworkUsed || item.applicableFramework);
           const isCopied = copiedIdx === idx;
 
           return (

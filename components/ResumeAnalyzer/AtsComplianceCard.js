@@ -4,7 +4,7 @@ import React from "react";
 import { CheckCircle2, AlertTriangle, XCircle, ShieldAlert, Cpu } from "lucide-react";
 
 export default function AtsComplianceCard({ atsReadability = {} }) {
-  const pillars = atsReadability.pillars || [
+  const defaultPillars = [
     {
       name: "Standard Section Headings",
       status: "pass",
@@ -67,7 +67,20 @@ export default function AtsComplianceCard({ atsReadability = {} }) {
     },
   ];
 
-  const totalScore = typeof atsReadability.totalAtsScore === "number" ? atsReadability.totalAtsScore : 18;
+  const pillars = Array.isArray(atsReadability.criteriaResults) && atsReadability.criteriaResults.length > 0
+    ? atsReadability.criteriaResults.map((c) => ({
+        name: c.criterion.replace(/^\d+\.\s*/, ""),
+        status: (c.status || "PASS").toLowerCase(),
+        weight: c.maxScore || 10,
+        evidence: c.observation || c.evidence || "",
+      }))
+    : atsReadability.pillars || defaultPillars;
+
+  const totalScore = typeof atsReadability.scoreOutOf20 === "number"
+    ? atsReadability.scoreOutOf20
+    : typeof atsReadability.totalAtsScore === "number"
+    ? Math.round((atsReadability.totalAtsScore / 100) * 20)
+    : 20;
   const maxScore = atsReadability.maxScore || 20;
 
   const getStatusBadge = (status) => {
