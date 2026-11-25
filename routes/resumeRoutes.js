@@ -8,6 +8,7 @@ const {
   getMyEvaluationsHandler,
   getEvaluationByIdHandler,
 } = require("../controllers/resumeEvaluationController");
+const { analyzeSkillGapHandler } = require("../controllers/careerIntelligenceController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 // Optional auth helper: populates req.user if token is present, but does not block if omitted
@@ -33,6 +34,7 @@ const optionalAuth = async (req, res, next) => {
 router.post("/evaluate", optionalAuth, evaluateResumeHandler);
 router.post("/evaluate-file", optionalAuth, upload.single("resume"), evaluateFileHandler);
 router.post("/job-match", calculateJobMatchHandler);
+router.post("/skill-gap", upload.single("resume"), analyzeSkillGapHandler);
 
 // Protected routes (requires login)
 router.get("/my-evaluations", authMiddleware, getMyEvaluationsHandler);
