@@ -58,6 +58,32 @@ export async function calculateJobMatch({ resume, jobDescription }) {
 }
 
 /**
+ * Conducts AI Skill Gap Intelligence analysis (evidence-backed gaps, project recommendations, and roadmap)
+ * @param {Object} params { resumeText?: string, file?: File, jobDescription: string }
+ */
+export async function analyzeSkillGap({ resumeText = "", file = null, jobDescription = "" }) {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+  if (file) {
+    const formData = new FormData();
+    formData.append("resume", file);
+    formData.append("jobDescription", jobDescription);
+    return apiClient("/career-intelligence/skill-gap", {
+      method: "POST",
+      headers,
+      body: formData,
+    });
+  }
+
+  return apiClient("/career-intelligence/skill-gap", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ resumeText, jobDescription }),
+  });
+}
+
+/**
  * Fetches current candidate's evaluation history
  */
 export async function getMyEvaluations() {

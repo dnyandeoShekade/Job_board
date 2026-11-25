@@ -106,6 +106,14 @@ export default function ResumeDashboard() {
             </Link>
 
             <Link
+              href="/resume-analyzer/skill-intelligence"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-indigo-600/90 hover:bg-indigo-500 border border-indigo-400/40 text-white font-bold text-sm shadow-md transition transform active:scale-95"
+            >
+              <Sparkles className="w-4 h-4 text-indigo-200" />
+              <span>Skill Gap Intelligence (AI)</span>
+            </Link>
+
+            <Link
               href="/resume-analyzer/history"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-indigo-800/80 hover:bg-indigo-700/80 border border-indigo-600/50 text-white font-semibold text-sm transition"
             >
